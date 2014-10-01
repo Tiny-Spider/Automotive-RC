@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
@@ -18,6 +19,10 @@ public class GameManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
+    }
+
+    public void SetName(InputField field) { 
+        name = field.value; 
     }
 
 	void Start () {

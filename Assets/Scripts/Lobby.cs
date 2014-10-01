@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class Lobby : MonoBehaviour {
     public Dictionary<NetworkPlayer, string> connectedPlayers = new Dictionary<NetworkPlayer, string>();
+    public string levelToLoad = "Test World";
 
     [RPC]
     public void StartGame() {
         Debug.Log("Recived start game message!");
 
-        StartCoroutine(SceneLoader.LoadLevel("Dev"));
+        StartCoroutine(SceneLoader.LoadLevel(levelToLoad));
         StartCoroutine(SpawnCar());
     }
 
