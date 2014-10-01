@@ -33,12 +33,12 @@ public class ItemCollect : MonoBehaviour {
         //spawnpoints.    
     }
 
-    void AddCollectableToCar(int carID)
+    void AddCollectableToCar(NetworkPlayer carID)
     {
         collected[carID] += 1;
     }
 
-    void RemoveCollectableFromCar(int carID)
+    void RemoveCollectableFromCar(NetworkPlayer carID)
     {
         collected[carID] -= 1;
     }
