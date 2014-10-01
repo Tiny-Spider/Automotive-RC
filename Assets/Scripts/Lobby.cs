@@ -32,4 +32,8 @@ public class Lobby : MonoBehaviour {
         Debug.Log("A player disconnected: " + networkPlayer.guid);
         connectedPlayers.Remove(networkPlayer);
     }
+
+    public void Clear() {
+        connectedPlayers.Clear();
+    }
 }

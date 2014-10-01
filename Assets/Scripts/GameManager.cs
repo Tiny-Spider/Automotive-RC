@@ -3,18 +3,25 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
     private static GameManager instance;
-    public string name = "Player";
-    public string menuScene = "Menu";
-    public GameObject prefab;
     private Menu menu;
 
+    public string name = "Player";
+    public string menuScene = "Menu";
+
+    // TEMP
+    public GameObject prefab;
+
     void Awake() {
-        DontDestroyOnLoad(transform.gameObject);
+        if (!instance) {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject);
+        }
     }
 
 	void Start () {
-        OnLevelWasLoaded(0);
-        instance = this;
+        OnLevelWasLoaded(Application.loadedLevel);
 	}
 
     void OnLevelWasLoaded(int level) {

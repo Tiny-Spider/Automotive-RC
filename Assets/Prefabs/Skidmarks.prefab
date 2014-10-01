@@ -65,13 +65,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75b1f8b8c44c9814e8e50944cbe3217d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a2ca953033abb94d8d65d672307818b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxMarks: 512
   markWidth: .449999988
   groundOffset: .0199999996
-  minDistance: 0
+  minDistance: .100000001
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

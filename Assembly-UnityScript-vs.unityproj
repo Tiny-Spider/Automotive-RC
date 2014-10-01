@@ -55,9 +55,6 @@
      <None Include="Assets\ProCore\Prototype\Shader\UnlitColor.shader" />
      <None Include="Assets\ProCore\Prototype\Shader\UnlitColor-Overlay.shader" />
      <None Include="Assets\ProCore\Prototype\Shader\DiffuseVertexColorEmission.shader" />
- <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>C:/Users/Mark/Documents/Unity/Projects/Automotive RC Game/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -73,10 +70,6 @@
  <Reference Include="SixBySeven">
  <HintPath>C:/Users/Mark/Documents/Unity/Projects/Automotive RC Game/Assets/ProCore/Shared/Code/SixBySeven.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
-      <Project>{638B6079-D32E-ECEF-397E-F306571E5A57}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

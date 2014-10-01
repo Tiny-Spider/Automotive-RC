@@ -425,7 +425,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 32585e1d11af04f4d9be6e18018c9d92, type: 2}
+  - {fileID: 2100000, guid: 9e76322eb80d69c41ae539cebf6a254a, type: 2}
   - {fileID: 2100000, guid: 9bdcf00421b478d4f8d5d1d78c2d7e5b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -446,7 +446,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 32585e1d11af04f4d9be6e18018c9d92, type: 2}
+  - {fileID: 2100000, guid: 9e76322eb80d69c41ae539cebf6a254a, type: 2}
   - {fileID: 2100000, guid: 9bdcf00421b478d4f8d5d1d78c2d7e5b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -467,7 +467,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 32585e1d11af04f4d9be6e18018c9d92, type: 2}
+  - {fileID: 2100000, guid: 9e76322eb80d69c41ae539cebf6a254a, type: 2}
   - {fileID: 2100000, guid: 9bdcf00421b478d4f8d5d1d78c2d7e5b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -488,7 +488,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 32585e1d11af04f4d9be6e18018c9d92, type: 2}
+  - {fileID: 2100000, guid: 9e76322eb80d69c41ae539cebf6a254a, type: 2}
   - {fileID: 2100000, guid: 9bdcf00421b478d4f8d5d1d78c2d7e5b, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -509,7 +509,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 32585e1d11af04f4d9be6e18018c9d92, type: 2}
+  - {fileID: 2100000, guid: b188f29e6cb7f454faf8928aaf6cb697, type: 2}
   - {fileID: 2100000, guid: b188f29e6cb7f454faf8928aaf6cb697, type: 2}
   - {fileID: 2100000, guid: 21cf0855a0c8ab14889164b4a542b933, type: 2}
   - {fileID: 2100000, guid: 39648ae7426b80846b96a48b39355b26, type: 2}

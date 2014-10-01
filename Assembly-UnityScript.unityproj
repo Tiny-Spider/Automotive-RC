@@ -71,12 +71,6 @@
  <HintPath>C:/Users/Mark/Documents/Unity/Projects/Automotive RC Game/Assets/ProCore/Shared/Code/SixBySeven.dll</HintPath>
  </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{638B6079-D32E-ECEF-397E-F306571E5A57}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
-      <Project>{FE7378EB-FDAF-3E0F-A652-5A4B3FE47C2E}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	   Other similar extension points exist, see Microsoft.Common.targets.

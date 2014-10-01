@@ -8,25 +8,35 @@ public class NetworkManager : MonoBehaviour {
     public GameManager gameManager;
     public Lobby lobby;
 
+    public int lobbyPanelID = 1;
+
     public bool useNAT = false;
-    public string port = "";
-    public string maxPlayers = "";
+    public int port = 0;
+    public int maxPlayers = 32;
 
     public void SetUseNat(bool useNAT) { this.useNAT = useNAT; }
-    public void SetPort(InputField field) { this.port = field.value; }
-    public void SetMaxPlayers(InputField field) { this.maxPlayers = field.value; }
+
+    public void SetPort(InputField field) {
+        if (!int.TryParse(field.value, out port)) {
+            field.value = port.ToString();
+        }
+    }
+
+    public void SetMaxPlayers(InputField field) {
+        if (!int.TryParse(field.value, out maxPlayers)) {
+            field.value = port.ToString();
+        }
+    }
+
+    // ================================================================================= //
 
     public void StartServer() {
-        try {
-            int port = int.Parse(this.port);
-            int maxPlayers = int.Parse(this.maxPlayers);
+        NetworkConnectionError error = Network.InitializeServer(maxPlayers, port, useNAT);
 
-            Network.InitializeServer(maxPlayers, port, useNAT);
+        if (error == NetworkConnectionError.NoError)
             MasterServer.RegisterHost("AutoMotiveRC", "Game1", "Open Game");
-        }
-        catch (Exception ex) {
-            Debug.LogError("Error: " + ex); 
-        }
+        else
+            Debug.LogError("Error on network initializing: " + error.ToString());
     }
 
     public void Connect(InputField field) {
@@ -35,8 +45,16 @@ public class NetworkManager : MonoBehaviour {
             Network.Connect(ip[0], int.Parse(ip[1]));
         }
         catch (Exception ex) {
+            field.value = ex.Message;
             Debug.LogError("Error: " + ex); 
         }
+    }
+
+    public void Disconnect() {
+        Network.Disconnect();
+        lobby.Clear();
+
+        MasterServer.UnregisterHost();
     }
 
     public void SendRPC(string name) {
@@ -46,7 +64,10 @@ public class NetworkManager : MonoBehaviour {
     // Client Events
     void OnConnectedToServer() {
         networkView.RPC("AddPlayer", RPCMode.AllBuffered, gameManager.name);
-        gameManager.GetMenu().ShowLobby();
+
+        Menu menu = gameManager.GetMenu();
+        menu.HidePanels();
+        menu.ShowPanel(lobbyPanelID);
     }
 
     void OnDisconnectedFromServer(NetworkDisconnection info) {
@@ -68,7 +89,10 @@ public class NetworkManager : MonoBehaviour {
     // Server Events
     void OnServerInitialized() {
         networkView.RPC("AddPlayer", RPCMode.AllBuffered, gameManager.name);
-        gameManager.GetMenu().ShowLobby();
+
+        Menu menu = gameManager.GetMenu();
+        menu.HidePanels();
+        menu.ShowPanel(lobbyPanelID);
     }
 
     // Unused since we use "OnConnectedToServer" for the name

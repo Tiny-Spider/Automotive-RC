@@ -2,19 +2,19 @@
 using System.Collections;
 
 public class Menu : MonoBehaviour {
-    public GameObject clientPanel;
-    public GameObject serverPanel;
-    public GameObject lobbyPanel;
+    public GameObject[] panels = new GameObject[0];
 
-    public void ShowLobby() {
-        clientPanel.SetActive(false);
-        serverPanel.SetActive(false);
-        lobbyPanel.SetActive(true);
+    public void HidePanels() {
+        foreach (GameObject panel in panels) {
+            panel.SetActive(false);
+        }
     }
 
-    public void ShowMenu() {
-        clientPanel.SetActive(true);
-        serverPanel.SetActive(true);
-        lobbyPanel.SetActive(false);
+    public void ShowPanel(GameObject panel) {
+        panel.SetActive(true);
+    }
+
+    public void ShowPanel(int panelID) {
+        panels[panelID].SetActive(true);
     }
 }
