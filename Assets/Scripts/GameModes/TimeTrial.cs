@@ -11,8 +11,8 @@ using System;
 public class TimeTrial : Mode {
 
     GameObject[] checkpoints;
-    Dictionary<int,int>currentCheckpoint;
-    Dictionary<int, float> timeChecker;
+    Dictionary<NetworkPlayer,int>currentCheckpoint;
+    Dictionary<NetworkPlayer, float> timeChecker;
 
     public override void Awake()
     {
@@ -42,21 +42,21 @@ public class TimeTrial : Mode {
 
     void InitializeCars()
     {
-        foreach (Car car in GameObject.FindObjectsOfType<Car>())
+        foreach (CarNetwork car in GameObject.FindObjectsOfType<CarNetwork>())
         {
-            currentCheckpoint.Add(car.id, 0);
-            timeChecker.Add(car.id, 0);
+            currentCheckpoint.Add(car.networkView.owner, 0);
+            timeChecker.Add(car.networkView.owner, 0);
         }
     }
 
-    public void OnTriggerEnter(int id, int checkpointNR, Checkpoint checkpoint)
+    public void OnTriggerEnter(NetworkPlayer player, int checkpointNR, Checkpoint checkpoint)
     {
-        if (currentCheckpoint[id] == checkpointNR -1)
+        if (currentCheckpoint[player] == checkpointNR -1)
         {
-            currentCheckpoint[id] = checkpointNR;
-            checkpoint.HighlightNextPoint(checkpoints[id], checkpoints[id + 1]);
+            currentCheckpoint[player] = checkpointNR;
+            checkpoint.HighlightNextPoint(checkpoints[currentCheckpoint[player]], checkpoints[currentCheckpoint[player] + 1]);
 
-            string timeShow = GetTimeDifference(timeChecker[id]);
+            string timeShow = GetTimeDifference(timeChecker[player]);
             //send the string through to the GUI.
         }
     }
@@ -82,7 +82,7 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        timeTrial.OnTriggerEnter(other.gameObject.GetComponent<Car>().id,checkpointNumber,this);
+        timeTrial.OnTriggerEnter(other.gameObject.networkView.owner,checkpointNumber, this);
     }
 
 
