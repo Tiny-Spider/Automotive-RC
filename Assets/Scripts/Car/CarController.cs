@@ -51,9 +51,11 @@ public class CarController : MonoBehaviour {
         motorInput = Input.GetAxis("Vertical");
 
         //Audio
-        audio.pitch = Mathf.Abs(engineRPM / maxEngineRPM) + 1.0F;
-        if (audio.pitch > 2.0) {
-            audio.pitch = 2.0F;
+        if (audio) {
+            audio.pitch = Mathf.Abs(engineRPM / maxEngineRPM) + 1.0F;
+            if (audio.pitch > 2.0) {
+                audio.pitch = 2.0F;
+            }
         }
 
         //Steering

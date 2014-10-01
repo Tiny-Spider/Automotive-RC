@@ -7698,7 +7698,7 @@ MonoBehaviour:
   speed: 0
   maxSpeed: 100
   maxSpeedBackward: 45
-  skidAudio: {fileID: 558798873}
+  skidAudio: {fileID: 0}
 --- !u!54 &1086870296
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10087,7 +10087,7 @@ Prefab:
     - target: {fileID: 11400006, guid: c2f9f07b3d584cd41a22a4000001ad0b, type: 2}
       propertyPath: skidAudio
       value: 
-      objectReference: {fileID: 558798873}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c2f9f07b3d584cd41a22a4000001ad0b, type: 2}
   m_RootGameObject: {fileID: 1086870289}
