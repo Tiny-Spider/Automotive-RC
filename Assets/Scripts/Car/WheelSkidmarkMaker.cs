@@ -12,11 +12,11 @@ public class WheelSkidmarkMaker : MonoBehaviour {
     private WheelCollider wheel_col;
 
     void Start () {
-	wheel_col = GetComponent<WheelCollider>();
-	skidmarks = FindObjectOfType<WheelSkidmarks>();
+	    wheel_col = GetComponent<WheelCollider>();
+	    skidmarks = FindObjectOfType<WheelSkidmarks>();
 
-	if(!skidmarks)
-		Debug.Log("No \"WheelSkidmarks\" object found. Skidmarks will not be drawn");
+	    if(!skidmarks)
+		    Debug.Log("No \"WheelSkidmarks\" object found. Skidmarks will not be drawn");
 	}
 
     void FixedUpdate() {

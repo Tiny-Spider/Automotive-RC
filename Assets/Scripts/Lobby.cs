@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Lobby : MonoBehaviour {
-    public Dictionary<NetworkPlayer, string> connectedPlayers = new Dictionary<NetworkPlayer, string>();
+    private Dictionary<NetworkPlayer, string> connectedPlayers = new Dictionary<NetworkPlayer, string>();
     public string levelToLoad = "Test World";
 
     [RPC]
@@ -32,6 +32,10 @@ public class Lobby : MonoBehaviour {
     public void DisconnectPlayer(NetworkPlayer networkPlayer) {
         Debug.Log("A player disconnected: " + networkPlayer.guid);
         connectedPlayers.Remove(networkPlayer);
+    }
+
+    public string GetPlayerName(NetworkPlayer networkPlayer) {
+        return connectedPlayers[networkPlayer];
     }
 
     public void Clear() {

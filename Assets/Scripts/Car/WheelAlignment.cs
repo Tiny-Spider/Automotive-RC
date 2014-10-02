@@ -6,6 +6,7 @@ public class WheelAlignment : MonoBehaviour {
     public WheelCollider correspondingCollider;
     public GameObject slipPrefab;
 
+    public float slipSpeed = 1.8F;
     private float rotationValue = 0.0F;
 
     void Update() {
@@ -25,7 +26,7 @@ public class WheelAlignment : MonoBehaviour {
         WheelHit correspondingGroundHit;
         correspondingCollider.GetGroundHit(out correspondingGroundHit);
 
-        if (Mathf.Abs(correspondingGroundHit.sidewaysSlip) > 10) {
+        if (Mathf.Abs(correspondingGroundHit.sidewaysSlip) > slipSpeed) {
             if (slipPrefab) {
                 Instantiate(slipPrefab, correspondingGroundHit.point, Quaternion.identity);
             }

@@ -4,35 +4,26 @@ using System.Collections;
 [RequireComponent(typeof(GUIText))]
 public class NameTag : MonoBehaviour {
     public NetworkView network;
-    public Transform target;  // Object that this label should follow
-    public Vector3 offset = Vector3.up;    // Units in world space to offset; 1 unit above object by default
+    public Transform target; 
+    public Vector3 offset = Vector3.up;
     public bool clampToScreen = false;  // If true, label will be visible even if object is off screen
     public float clampBorderSize = 0.05f;  // How much viewport space to leave at the borders when a label is being clamped
-    public bool useMainCamera = true;   // Use the camera tagged MainCamera
-    public Camera cameraToUse;   // Only use this if useMainCamera is false
 
     Camera cam;
     Transform thisTransform;
     Transform camTransform;
 
-    void Awake() {
-        if (network.isMine) {
+    void Start() {
+        if (!network || !network.enabled || network.isMine) {
             Destroy(gameObject);
             return;
         }
-    }
 
-    void Start() {
         thisTransform = transform;
-
-        if (useMainCamera)
-            cam = Camera.main;
-        else
-            cam = cameraToUse;
-
+        cam = Camera.main;
         camTransform = cam.transform;
 
-        guiText.text = GameManager.FindObjectOfType<Lobby>().connectedPlayers[network.owner];
+        guiText.text = FindObjectOfType<Lobby>().GetPlayerName(networkView.owner);
     }
 
 

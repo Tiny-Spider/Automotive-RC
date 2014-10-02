@@ -8,23 +8,34 @@ public class CarController : MonoBehaviour {
     public WheelCollider wheel_RL;
     public WheelCollider wheel_RR;
 
-    public bool wheel_FL_power = false;
-    public bool wheel_FR_power = false;
-    public bool wheel_RL_power = true;
-    public bool wheel_RR_power = true;
-
+    public float maxSpeed = 150.0F;
+    public float maxSpeedBackward = 30.0F;
     public float engineTorque = 600.0F;
     public float maxEngineRPM = 3000.0F;
     public float minEngineRPM = 1000.0F;
-    public float steerAngle = 10.0F;
 
-    public Transform COM;
+    public bool wheel_FL_power = true;
+    public bool wheel_FR_power = true;
+    public bool wheel_RL_power = false;
+    public bool wheel_RR_power = false;
+
+    public float breakPower = 600.0F;
+
+    public bool wheel_FL_break = false;
+    public bool wheel_FR_break = false;
+    public bool wheel_RL_break = true;
+    public bool wheel_RR_break = true;
+
+    public float steerAngle = 10.0F;
+    // KM/U (m/s * 3.6 = km/u)
     public float speed = 0.0F;
-    public float maxSpeed = 150.0F;
-    public float maxSpeedBackward = 30.0F;
-    public AudioSource skidAudio;
+
     private float engineRPM = 0.0F;
     private float motorInput = 0.0F;
+
+    public Transform COM;
+    public AudioSource skidAudio;
+    public AudioSource motorAudio;
 
     void Awake() {
         // Multiplayer
@@ -51,10 +62,10 @@ public class CarController : MonoBehaviour {
         motorInput = Input.GetAxis("Vertical");
 
         //Audio
-        if (audio) {
-            audio.pitch = Mathf.Abs(engineRPM / maxEngineRPM) + 1.0F;
-            if (audio.pitch > 2.0) {
-                audio.pitch = 2.0F;
+        if (motorAudio) {
+            motorAudio.pitch = Mathf.Abs(engineRPM / maxEngineRPM) + 1.0F;
+            if (motorAudio.pitch > 2.0) {
+                motorAudio.pitch = 2.0F;
             }
         }
 
@@ -63,15 +74,11 @@ public class CarController : MonoBehaviour {
         wheel_FR.steerAngle = steerAngle * Input.GetAxis("Horizontal");
 
         //Speed Limiter.
-        if (speed > (motorInput < 0.0F ? maxSpeedBackward : maxSpeed)) {
-            if (wheel_FL_power) 
-                wheel_FL.motorTorque = 0;
-            if (wheel_FR_power)
-                wheel_FR.motorTorque = 0;
-            if (wheel_RL_power)
-                wheel_RL.motorTorque = 0;
-            if (wheel_RR_power)
-                wheel_RR.motorTorque = 0;
+        if (motorInput < 0.0F ? speed > maxSpeedBackward : speed > maxSpeed) {
+            wheel_FL.motorTorque = 0;
+            wheel_FR.motorTorque = 0;
+            wheel_RL.motorTorque = 0;
+            wheel_RR.motorTorque = 0;
         }
         else {
             if (wheel_FL_power)
@@ -84,16 +91,6 @@ public class CarController : MonoBehaviour {
                 wheel_RR.motorTorque = engineTorque * Input.GetAxis("Vertical");
         }
 
-        //Input.
-        if (motorInput <= 0) {
-            wheel_RL.brakeTorque = 30;
-            wheel_RR.brakeTorque = 30;
-        }
-        else if (motorInput >= 0) {
-            wheel_RL.brakeTorque = 0;
-            wheel_RR.brakeTorque = 0;
-        }
-
         //SkidAudio.
         if (skidAudio) {
             WheelHit correspondingGroundHit;
@@ -104,14 +101,26 @@ public class CarController : MonoBehaviour {
 
         //HandBrake
         if (Input.GetButton("Jump")) {
-            wheel_FL.brakeTorque = 100;
-            wheel_FR.brakeTorque = 100;
-        }
+            if (wheel_FL_break)
+                wheel_FL.brakeTorque = breakPower;
+            if (wheel_FR_break)
+                wheel_FR.brakeTorque = breakPower;
+            if (wheel_RL_break)
+                wheel_RL.brakeTorque = breakPower;
+            if (wheel_RR_break)
+                wheel_RR.brakeTorque = breakPower;
 
-        //if (Input.GetButtonUp("Jump")) {
-        //    wheel_FL.brakeTorque = 0;
-        //    wheel_FR.brakeTorque = 0;
-        //}
+            wheel_FL.motorTorque = 0;
+            wheel_FR.motorTorque = 0;
+            wheel_RL.motorTorque = 0;
+            wheel_RR.motorTorque = 0;
+        }
+        else {
+            wheel_FL.brakeTorque = 0;
+            wheel_FR.brakeTorque = 0;
+            wheel_RL.brakeTorque = 0;
+            wheel_RR.brakeTorque = 0;
+        }
 
         if (Input.GetButton("Reset")) {
             transform.rotation = Quaternion.identity;
