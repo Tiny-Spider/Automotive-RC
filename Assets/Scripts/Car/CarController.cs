@@ -34,6 +34,7 @@ public class CarController : MonoBehaviour {
     private float motorInput = 0.0F;
 
     public Transform COM;
+    public GameObject headLights;
     public AudioSource skidAudio;
     public AudioSource motorAudio;
 
@@ -124,6 +125,10 @@ public class CarController : MonoBehaviour {
 
         if (Input.GetButton("Reset")) {
             transform.rotation = Quaternion.identity;
+        }
+
+        if (Input.GetButtonDown("Light")) {
+            headLights.SetActive(!headLights.activeInHierarchy);
         }
 
         if (Input.GetButton("FReset")) {

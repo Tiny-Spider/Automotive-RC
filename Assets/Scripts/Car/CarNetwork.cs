@@ -8,6 +8,8 @@ public class CarNetwork : MonoBehaviour {
     public WheelCollider wheel_RL;
     public WheelCollider wheel_RR;
 
+    public GameObject headLights;
+
     float FL_steerAngle = 0;
     float FR_steerAngle = 0;
 
@@ -20,6 +22,8 @@ public class CarNetwork : MonoBehaviour {
     float FR_brakeTorque = 0;
     float RL_brakeTorque = 0;
     float RR_brakeTorque = 0;
+
+    bool showHeadLights = false;
 
     Vector3 position = Vector3.zero;
     Quaternion rotation = Quaternion.identity;
@@ -34,6 +38,10 @@ public class CarNetwork : MonoBehaviour {
 
     void Update() {
         if (!networkView.isMine) {
+            if (headLights.activeInHierarchy != showHeadLights) {
+                headLights.SetActive(showHeadLights);
+            }
+
             wheel_FL.steerAngle = FL_steerAngle;
             wheel_FL.motorTorque = FL_motorTorque;
             wheel_FL.brakeTorque = FL_brakeTorque;
@@ -56,6 +64,8 @@ public class CarNetwork : MonoBehaviour {
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
         if (stream.isWriting) {
+            bool showHeadLights = headLights.activeInHierarchy;
+
             float FL_steerAngle = wheel_FL.steerAngle;
             float FR_steerAngle = wheel_FR.steerAngle;
 
@@ -72,6 +82,8 @@ public class CarNetwork : MonoBehaviour {
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
             Vector3 velocity = rigidbody.velocity;
+
+            stream.Serialize(ref showHeadLights);
 
             stream.Serialize(ref FL_steerAngle);
             stream.Serialize(ref FR_steerAngle);
@@ -91,6 +103,8 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref velocity);
         }
         else {
+            stream.Serialize(ref showHeadLights);
+
             stream.Serialize(ref FL_steerAngle);
             stream.Serialize(ref FR_steerAngle);
 
