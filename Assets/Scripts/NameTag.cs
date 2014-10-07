@@ -23,7 +23,7 @@ public class NameTag : MonoBehaviour {
         cam = Camera.main;
         camTransform = cam.transform;
 
-        guiText.text = FindObjectOfType<Lobby>().GetPlayerName(networkView.owner);
+        guiText.text = FindObjectOfType<Lobby>().GetPlayerName(network.owner);
     }
 
 

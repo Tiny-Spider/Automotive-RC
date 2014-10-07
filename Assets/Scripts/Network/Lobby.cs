@@ -6,6 +6,12 @@ public class Lobby : MonoBehaviour {
     private Dictionary<NetworkPlayer, string> connectedPlayers = new Dictionary<NetworkPlayer, string>();
     public string levelToLoad = "Test World";
 
+    public delegate void OnPlayerJoined(NetworkPlayer player, string name);
+    public event OnPlayerJoined OnJoin = delegate { };
+
+    public delegate void OnPlayerDisconnect(NetworkPlayer player, string name);
+    public event OnPlayerDisconnect OnDisconnect = delegate { };
+
     [RPC]
     public void StartGame() {
         Debug.Log("Recived start game message!");
@@ -23,14 +29,18 @@ public class Lobby : MonoBehaviour {
     }
 
     [RPC]
-    public void AddPlayer(string name, NetworkMessageInfo info) {
-        Debug.Log("A new player connected: " + name);
-        connectedPlayers.Add(info.sender, name);
+    public void AddPlayer(NetworkPlayer player, string name) {
+        Debug.Log("A new player connected: " + name + ", " + player.ToString());
+        connectedPlayers.Add(player, name);
+
+        OnJoin(player, name);
     }
 
     [RPC]
     public void DisconnectPlayer(NetworkPlayer networkPlayer) {
         Debug.Log("A player disconnected: " + networkPlayer.guid);
+        OnDisconnect(networkPlayer, connectedPlayers[networkPlayer]);
+
         connectedPlayers.Remove(networkPlayer);
     }
 

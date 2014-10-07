@@ -63,11 +63,11 @@ public class NetworkManager : MonoBehaviour {
 
     // Client Events
     void OnConnectedToServer() {
-        networkView.RPC("AddPlayer", RPCMode.AllBuffered, gameManager.name);
-
         Menu menu = gameManager.GetMenu();
         menu.HidePanels();
         menu.ShowPanel(lobbyPanelID);
+
+        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
     }
 
     void OnDisconnectedFromServer(NetworkDisconnection info) {
@@ -88,17 +88,15 @@ public class NetworkManager : MonoBehaviour {
 
     // Server Events
     void OnServerInitialized() {
-        networkView.RPC("AddPlayer", RPCMode.AllBuffered, gameManager.name);
-
         Menu menu = gameManager.GetMenu();
         menu.HidePanels();
         menu.ShowPanel(lobbyPanelID);
+
+        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
     }
 
     // Unused since we use "OnConnectedToServer" for the name
-    void OnPlayerConnected(NetworkPlayer player) {
-
-    }
+    void OnPlayerConnected(NetworkPlayer player) { }
 
     void OnPlayerDisconnected(NetworkPlayer player) {
         networkView.RPC("DisconnectPlayer", RPCMode.AllBuffered, player);

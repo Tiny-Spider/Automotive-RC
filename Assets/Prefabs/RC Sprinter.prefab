@@ -867,7 +867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   network: {fileID: 14800000}
   target: {fileID: 400026}
-  offset: {x: 0, y: 1, z: 0}
+  offset: {x: 0, y: .5, z: 0}
   clampToScreen: 0
   clampBorderSize: .0500000007
 --- !u!132 &13200000
@@ -890,7 +890,7 @@ GUIText:
   m_FontStyle: 0
   m_Color:
     serializedVersion: 2
-    rgba: 4294901843
+    rgba: 4294967295
   m_PixelCorrect: 1
   m_RichText: 1
 --- !u!146 &14600000
