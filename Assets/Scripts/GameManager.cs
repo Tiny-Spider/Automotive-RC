@@ -4,15 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
-    private static GameManager instance;
+    public static GameManager instance { private set; get; }
     private Menu menu;
     private Mode gameMode;
     public bool inGame = false;
     public List<GameObject> cars;
+    private HUD hud;
 
     public string name = "Player";
     public string menuScene = "Menu";
-    public string sceneToLoad = "Demo";
+    public string levelToLoad = "Test World";
 
     // TEMP
     public GameObject prefab;
@@ -40,7 +41,9 @@ public class GameManager : MonoBehaviour {
 
         if (Application.loadedLevelName == menuScene) {
             menu = FindObjectOfType<Menu>();
+            hud = null;
         } else {
+            hud = FindObjectOfType<HUD>();
             menu = null;
         }
         if (Application.loadedLevelName == sceneToLoad)
@@ -59,13 +62,12 @@ public class GameManager : MonoBehaviour {
         if(inGame)
         gameMode.Update();
 	}
+    public HUD GetHUD() {
+        return hud;
+    }
 
     public Menu GetMenu() {
         return menu;
-    }
-
-    public static GameManager GetInstance() {
-        return instance; // Maybe do a check and create instance on new GameObject
     }
 
     public void RegisterCar(GameObject car)
