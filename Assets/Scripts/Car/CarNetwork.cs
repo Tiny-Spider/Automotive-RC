@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Disable the unused messages forOnSerializeNetworkView
+#pragma warning disable 0219
+
 [AddComponentMenu("Car/Network")]
 public class CarNetwork : MonoBehaviour {
     public WheelCollider wheel_FL;
@@ -16,7 +19,7 @@ public class CarNetwork : MonoBehaviour {
     float FL_motorTorque = 0;
     float FR_motorTorque = 0;
     float RL_motorTorque = 0;
-    float RR_motorTorque;
+    float RR_motorTorque = 0;
 
     float FL_brakeTorque = 0;
     float FR_brakeTorque = 0;

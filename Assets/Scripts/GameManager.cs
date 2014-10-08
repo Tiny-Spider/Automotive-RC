@@ -3,11 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-    private static GameManager instance;
+    public static GameManager instance { private set; get; }
     private Menu menu;
+    private HUD hud;
 
     public string name = "Player";
     public string menuScene = "Menu";
+    public string levelToLoad = "Test World";
 
     // TEMP
     public GameObject prefab;
@@ -34,20 +36,18 @@ public class GameManager : MonoBehaviour {
 
         if (Application.loadedLevelName == menuScene) {
             menu = FindObjectOfType<Menu>();
+            hud = null;
         } else {
+            hud = FindObjectOfType<HUD>();
             menu = null;
         }
     }
 
-	void Update () {
-	
-	}
+    public HUD GetHUD() {
+        return hud;
+    }
 
     public Menu GetMenu() {
         return menu;
-    }
-
-    public static GameManager GetInstance() {
-        return instance; // Maybe do a check and create instance on new GameObject
     }
 }

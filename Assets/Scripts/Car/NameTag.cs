@@ -4,6 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(GUIText))]
 public class NameTag : MonoBehaviour {
     public NetworkView network;
+    public TextMesh text;
     public Transform target; 
     public Vector3 offset = Vector3.up;
     public bool clampToScreen = false;  // If true, label will be visible even if object is off screen
@@ -23,7 +24,10 @@ public class NameTag : MonoBehaviour {
         cam = Camera.main;
         camTransform = cam.transform;
 
-        guiText.text = FindObjectOfType<Lobby>().GetPlayerName(network.owner);
+
+        Debug.Log("GUID: " + network.owner.guid);
+
+        text.text = Lobby.instance.GetProfile(network.owner).name;
     }
 
 

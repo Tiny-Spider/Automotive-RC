@@ -5,6 +5,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Lobby))]
 public class NetworkManager : MonoBehaviour {
+    public static NetworkManager instance { private set; get; }
     public GameManager gameManager;
     public Lobby lobby;
 
@@ -14,7 +15,9 @@ public class NetworkManager : MonoBehaviour {
     public int port = 0;
     public int maxPlayers = 32;
 
-    public void SetUseNat(bool useNAT) { this.useNAT = useNAT; }
+    public void SetUseNat(bool useNAT) {
+        this.useNAT = useNAT; 
+    }
 
     public void SetPort(InputField field) {
         if (!int.TryParse(field.value, out port)) {
@@ -29,6 +32,16 @@ public class NetworkManager : MonoBehaviour {
     }
 
     // ================================================================================= //
+
+    void Awake() {
+        if (!instance) {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
+    }
 
     public void StartServer() {
         NetworkConnectionError error = Network.InitializeServer(maxPlayers, port, useNAT);
@@ -63,11 +76,7 @@ public class NetworkManager : MonoBehaviour {
 
     // Client Events
     void OnConnectedToServer() {
-        Menu menu = gameManager.GetMenu();
-        menu.HidePanels();
-        menu.ShowPanel(lobbyPanelID);
-
-        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
+        StartCoroutine(CreatePlayer());
     }
 
     void OnDisconnectedFromServer(NetworkDisconnection info) {
@@ -88,11 +97,7 @@ public class NetworkManager : MonoBehaviour {
 
     // Server Events
     void OnServerInitialized() {
-        Menu menu = gameManager.GetMenu();
-        menu.HidePanels();
-        menu.ShowPanel(lobbyPanelID);
-
-        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
+        StartCoroutine(CreatePlayer());
     }
 
     // Unused since we use "OnConnectedToServer" for the name
@@ -100,5 +105,16 @@ public class NetworkManager : MonoBehaviour {
 
     void OnPlayerDisconnected(NetworkPlayer player) {
         networkView.RPC("DisconnectPlayer", RPCMode.AllBuffered, player);
+    }
+
+
+    IEnumerator CreatePlayer() {
+        Menu menu = gameManager.GetMenu();
+        menu.HidePanels();
+        menu.ShowPanel(lobbyPanelID);
+
+        yield return new WaitForFixedUpdate();
+
+        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
     }
 }

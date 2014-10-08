@@ -573,7 +573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &283596016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,8 +636,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerEntryPrefab: {fileID: 100002, guid: d19ad9f8d25eeb840910344fe5726a07, type: 2}
   lobbyPanel: {fileID: 474813619}
-  nameText: Name
   grid: {fileID: 474813624}
+  nameText: Name
 --- !u!114 &283596020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1433,7 +1433,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: 1}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 20, y: -489}
+  m_AnchoredPosition: {x: 20, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: 1}
 --- !u!114 &474813621
@@ -1675,8 +1675,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a21a2dbbaac0344ab3a5638dcf72036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Player
+  name: Player 1
   menuScene: Menu
+  levelToLoad: Demo
   prefab: {fileID: 100026, guid: c2f9f07b3d584cd41a22a4000001ad0b, type: 2}
 --- !u!114 &544500530
 MonoBehaviour:
@@ -1689,7 +1690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14431cc292f827d4eaf5c1b0cc2bf40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelToLoad: Demo
 --- !u!1 &581093364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,10 +2360,10 @@ RectTransform:
   - {fileID: 1974744938}
   m_Father: {fileID: 1989163496}
   m_RootOrder: 4
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -195, y: 61}
-  m_SizeDelta: {x: 180, y: 57.9000015}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 208.5, y: 56}
+  m_SizeDelta: {x: 180, y: 57.8999939}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &751901840
 MonoBehaviour:

@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 11400002}
+  kickButton: {fileID: 11400008}
 --- !u!222 &22200000
 CanvasRenderer:
   m_ObjectHideFlags: 1

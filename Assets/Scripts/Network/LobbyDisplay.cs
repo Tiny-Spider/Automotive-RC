@@ -4,13 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class LobbyDisplay : MonoBehaviour {
+    public Dictionary<NetworkPlayer, LobbyEntry> lobbyEntries = new Dictionary<NetworkPlayer, LobbyEntry>();
+
     public GameObject playerEntryPrefab;
     public GameObject lobbyPanel;
-    public string nameText;
-
     public GridLayoutGroup grid;
-
-    public Dictionary<NetworkPlayer, PlayerEntry> playerEntries = new Dictionary<NetworkPlayer, PlayerEntry>();
+    public string nameText;
 
     private Lobby lobby;
 
@@ -26,32 +25,23 @@ public class LobbyDisplay : MonoBehaviour {
         lobby.OnDisconnect -= OnPlayerDisconnect;
     }
 
-    void OnPlayerConnect(NetworkPlayer player, string name) {
-        GameObject playerEntryGameobject = Instantiate(playerEntryPrefab) as GameObject;
-        PlayerEntry playerEntry = playerEntryGameobject.GetComponent<PlayerEntry>();
+    void OnPlayerConnect(PlayerProfile profile) {
+        GameObject entryGameobject = Instantiate(playerEntryPrefab) as GameObject;
+        LobbyEntry lobbyEntry = entryGameobject.GetComponent<LobbyEntry>();
+        lobbyEntry.transform.SetParent(grid.transform);
 
-        playerEntry.SetName(name);
-        playerEntry.player = player;
+        NetworkPlayer player = profile.GetOwner();
 
-        playerEntry.transform.SetParent(grid.transform);
-        playerEntries.Add(player, playerEntry);
+        lobbyEntry.SetName(profile.name);
+        lobbyEntry.player = player;
+
+        lobbyEntries.Add(player, lobbyEntry);
     }
 
-    void OnPlayerDisconnect(NetworkPlayer player, string name) {
-        Destroy(playerEntries[player].gameObject);
-        playerEntries.Remove(player);
+    void OnPlayerDisconnect(PlayerProfile profile) {
+        NetworkPlayer player = profile.GetOwner();
 
-        //foreach (KeyValuePair<NetworkPlayer, PlayerEntry> entry in playerEntries) {
-        //    Destroy(entry.Value.gameObject);
-
-        //    GameObject playerEntryGameobject = Instantiate(playerEntryPrefab) as GameObject;
-        //    PlayerEntry playerEntry = playerEntryGameobject.GetComponent<PlayerEntry>();
-
-        //    playerEntry.SetName(name);
-        //    playerEntry.player = player;
-
-        //    playerEntry.transform.SetParent(grid.transform);
-        //    playerEntries.Add(entry.Key, playerEntry);
-        //}
+        Destroy(lobbyEntries[player].gameObject);
+        lobbyEntries.Remove(player);
     }
 }
