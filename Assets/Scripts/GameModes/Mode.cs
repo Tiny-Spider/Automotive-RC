@@ -3,8 +3,8 @@ using System.Collections;
 
 public abstract class Mode {
 
-   public float startTime;
-   public  float time;
+    public float startTime;
+    public  float time;
 
     public abstract void Awake();
    
@@ -13,4 +13,7 @@ public abstract class Mode {
 	
 	// Update is called once per frame
     public abstract void Update();
+
+    public abstract void OnRegisterCar(GameObject car);
+
 }

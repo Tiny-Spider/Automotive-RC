@@ -39,6 +39,8 @@ public class CarController : MonoBehaviour {
     public AudioSource motorAudio;
 
     void Awake() {
+        GameManager.GetInstance().RegisterCar(gameObject);
+
         // Multiplayer
         if (Network.isClient || Network.isServer) {
             if (!networkView.isMine) {

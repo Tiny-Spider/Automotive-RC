@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class CoinCollect : MonoBehaviour {
 
     public List<GameObject> coins;
+    public Dictionary<NetworkPlayer, int> coinCounter;
     int totalCoins;
 
 	void Awake () {
@@ -16,6 +17,6 @@ public class CoinCollect : MonoBehaviour {
 	}
 	
 	void Update () {
-	
+	    
 	}
 }

@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
     private static GameManager instance;
     private Menu menu;
+    private Mode gameMode;
+    public bool inGame = false;
+    public List<GameObject> cars;
 
     public string name = "Player";
     public string menuScene = "Menu";
+    public string sceneToLoad = "Demo";
 
     // TEMP
     public GameObject prefab;
@@ -19,6 +24,7 @@ public class GameManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
+        gameMode = new TimeTrial();
     }
 
     public void SetName(InputField field) { 
@@ -37,10 +43,21 @@ public class GameManager : MonoBehaviour {
         } else {
             menu = null;
         }
+        if (Application.loadedLevelName == sceneToLoad)
+        {
+            inGame = true;
+            gameMode.Awake();
+            gameMode.Start();
+        }
+        else
+        {
+            inGame = false;
+        }
     }
 
 	void Update () {
-	
+        if(inGame)
+        gameMode.Update();
 	}
 
     public Menu GetMenu() {
@@ -49,5 +66,11 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager GetInstance() {
         return instance; // Maybe do a check and create instance on new GameObject
+    }
+
+    public void RegisterCar(GameObject car)
+    {
+        cars.Add(car);
+        gameMode.OnRegisterCar(car);
     }
 }
