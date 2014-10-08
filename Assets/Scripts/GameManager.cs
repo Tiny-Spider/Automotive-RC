@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
-        gameMode = new TimeTrial();
+        gameMode = new CoinCollect();
     }
 
     public void SetName(InputField field) { 
