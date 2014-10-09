@@ -39,6 +39,8 @@ public class Lobby : MonoBehaviour {
         connectedPlayers.Add(player, profile);
 
         OnJoin(profile);
+
+        Debug.Log("Name: " + name + " GUID: " + player.ToString());
     }
 
     [RPC]

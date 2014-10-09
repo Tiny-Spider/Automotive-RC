@@ -41,10 +41,6 @@ public class CarNetwork : MonoBehaviour {
 
     void Update() {
         if (!networkView.isMine) {
-            if (headLights.activeInHierarchy != showHeadLights) {
-                headLights.SetActive(showHeadLights);
-            }
-
             wheel_FL.steerAngle = FL_steerAngle;
             wheel_FL.motorTorque = FL_motorTorque;
             wheel_FL.brakeTorque = FL_brakeTorque;
@@ -63,12 +59,21 @@ public class CarNetwork : MonoBehaviour {
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 8F * Time.deltaTime);
             rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, velocity, 8F * Time.deltaTime);
         }
+        else {
+            if (headLights.activeInHierarchy != showHeadLights) {
+                showHeadLights = headLights.activeInHierarchy;
+                networkView.RPC("SetHeadlightsActive", RPCMode.Others, headLights.activeInHierarchy);
+            }
+        }
+    }
+
+    [RPC]
+    public void SetHeadlightsActive(bool active) {
+        headLights.SetActive(active);
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
         if (stream.isWriting) {
-            bool showHeadLights = headLights.activeInHierarchy;
-
             float FL_steerAngle = wheel_FL.steerAngle;
             float FR_steerAngle = wheel_FR.steerAngle;
 
@@ -106,8 +111,6 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref velocity);
         }
         else {
-            stream.Serialize(ref showHeadLights);
-
             stream.Serialize(ref FL_steerAngle);
             stream.Serialize(ref FR_steerAngle);
 
