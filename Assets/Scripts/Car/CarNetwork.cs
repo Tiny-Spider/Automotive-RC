@@ -58,18 +58,11 @@ public class CarNetwork : MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, position, 8F * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 8F * Time.deltaTime);
             rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, velocity, 8F * Time.deltaTime);
-        }
-        else {
+
             if (headLights.activeInHierarchy != showHeadLights) {
-                showHeadLights = headLights.activeInHierarchy;
-                networkView.RPC("SetHeadlightsActive", RPCMode.Others, headLights.activeInHierarchy);
+                headLights.SetActive(showHeadLights);
             }
         }
-    }
-
-    [RPC]
-    public void SetHeadlightsActive(bool active) {
-        headLights.SetActive(active);
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
@@ -91,6 +84,8 @@ public class CarNetwork : MonoBehaviour {
             Quaternion rotation = transform.rotation;
             Vector3 velocity = rigidbody.velocity;
 
+            bool showHeadLights = headLights.activeInHierarchy;
+
             stream.Serialize(ref showHeadLights);
 
             stream.Serialize(ref FL_steerAngle);
@@ -109,6 +104,8 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref position);
             stream.Serialize(ref rotation);
             stream.Serialize(ref velocity);
+
+            stream.Serialize(ref showHeadLights);
         }
         else {
             stream.Serialize(ref FL_steerAngle);
@@ -127,6 +124,8 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref position);
             stream.Serialize(ref rotation);
             stream.Serialize(ref velocity);
+
+            stream.Serialize(ref showHeadLights);
         }
     }
 }
