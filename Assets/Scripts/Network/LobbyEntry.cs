@@ -8,8 +8,8 @@ public class LobbyEntry : MonoBehaviour {
     public NetworkPlayer player;
 
     void Awake() {
-        // Can't kick the server, dummy :P
-        if (Network.isServer) {
+        // Can't kick yourself, dummy :P
+        if (player == Network.player) {
             kickButton.gameObject.SetActive(false);
         }
     }

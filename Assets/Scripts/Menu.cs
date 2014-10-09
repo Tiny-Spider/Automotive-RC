@@ -17,4 +17,8 @@ public class Menu : MonoBehaviour {
     public void ShowPanel(int panelID) {
         panels[panelID].SetActive(true);
     }
+
+    public void Exit() {
+        Application.Quit();
+    }
 }

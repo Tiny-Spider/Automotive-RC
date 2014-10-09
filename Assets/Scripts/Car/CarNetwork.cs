@@ -41,10 +41,6 @@ public class CarNetwork : MonoBehaviour {
 
     void Update() {
         if (!networkView.isMine) {
-            if (headLights.activeInHierarchy != showHeadLights) {
-                headLights.SetActive(showHeadLights);
-            }
-
             wheel_FL.steerAngle = FL_steerAngle;
             wheel_FL.motorTorque = FL_motorTorque;
             wheel_FL.brakeTorque = FL_brakeTorque;
@@ -62,13 +58,15 @@ public class CarNetwork : MonoBehaviour {
             transform.position = Vector3.Lerp(transform.position, position, 8F * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 8F * Time.deltaTime);
             rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, velocity, 8F * Time.deltaTime);
+
+            if (headLights.activeInHierarchy != showHeadLights) {
+                headLights.SetActive(showHeadLights);
+            }
         }
     }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
         if (stream.isWriting) {
-            bool showHeadLights = headLights.activeInHierarchy;
-
             float FL_steerAngle = wheel_FL.steerAngle;
             float FR_steerAngle = wheel_FR.steerAngle;
 
@@ -86,6 +84,8 @@ public class CarNetwork : MonoBehaviour {
             Quaternion rotation = transform.rotation;
             Vector3 velocity = rigidbody.velocity;
 
+            bool showHeadLights = headLights.activeInHierarchy;
+
             stream.Serialize(ref showHeadLights);
 
             stream.Serialize(ref FL_steerAngle);
@@ -104,10 +104,10 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref position);
             stream.Serialize(ref rotation);
             stream.Serialize(ref velocity);
+
+            stream.Serialize(ref showHeadLights);
         }
         else {
-            stream.Serialize(ref showHeadLights);
-
             stream.Serialize(ref FL_steerAngle);
             stream.Serialize(ref FR_steerAngle);
 
@@ -124,6 +124,8 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref position);
             stream.Serialize(ref rotation);
             stream.Serialize(ref velocity);
+
+            stream.Serialize(ref showHeadLights);
         }
     }
 }

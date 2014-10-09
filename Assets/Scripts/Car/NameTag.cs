@@ -1,48 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(GUIText))]
+[RequireComponent(typeof(TextMesh))]
 public class NameTag : MonoBehaviour {
     public NetworkView network;
     public TextMesh text;
-    public Transform target; 
-    public Vector3 offset = Vector3.up;
-    public bool clampToScreen = false;  // If true, label will be visible even if object is off screen
-    public float clampBorderSize = 0.05f;  // How much viewport space to leave at the borders when a label is being clamped
 
-    Camera cam;
-    Transform thisTransform;
+    NetworkPlayer owner;
+    Transform textTransform;
     Transform camTransform;
 
     void Start() {
-        if (!network || !network.enabled || network.isMine) {
+        // Singleplayer
+        if (!network || !network.enabled) {
             Destroy(gameObject);
             return;
         }
 
-        thisTransform = transform;
-        cam = Camera.main;
-        camTransform = cam.transform;
-
-
-        Debug.Log("GUID: " + network.owner.guid);
-
-        text.text = Lobby.instance.GetProfile(network.owner).name;
+        // Dont show my own nametag
+        if (network.isMine) {
+            networkView.RPC("SetOwner", RPCMode.AllBuffered, Network.player);
+            Destroy(gameObject);
+            return;
+        }
     }
 
+    [RPC]
+    public void SetOwner(NetworkPlayer owner) {
+        this.owner = owner;
+
+        text.text = Lobby.instance.GetProfile(owner).name;
+
+        textTransform = text.transform;
+        camTransform = Camera.main.transform;
+    }
 
     void Update() {
-        if (clampToScreen) {
-            Vector3 relativePosition = camTransform.InverseTransformPoint(target.position);
-            relativePosition.z = Mathf.Max(relativePosition.z, 1.0f);
-            thisTransform.position = cam.WorldToViewportPoint(camTransform.TransformPoint(relativePosition + offset));
-            thisTransform.position = new Vector3(Mathf.Clamp(thisTransform.position.x, clampBorderSize, 1.0f - clampBorderSize),
-                                             Mathf.Clamp(thisTransform.position.y, clampBorderSize, 1.0f - clampBorderSize),
-                                             thisTransform.position.z);
-
-        }
-        else {
-            thisTransform.position = cam.WorldToViewportPoint(target.position + offset);
-        }
+        if (textTransform && camTransform)
+            textTransform.rotation = camTransform.rotation;
     }
 }
