@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Car : MonoBehaviour {
+    public NetworkPlayer player;
+
     public float maxSpeed = 100.0F;
     public float maxSpeedBackward = 35.0F;
     public float engineTorque = 225.0F;
@@ -33,8 +35,14 @@ public class Car : MonoBehaviour {
         }
     }
 
-    void OnNetworkInstantiate(NetworkMessageInfo info) {
-        Debug.Log("OnNetworkInstantiate sender: " + info.sender.ToString());
-        Lobby.instance.GetProfile(info.sender).car = gameObject;
+    void Start() {
+        if (networkView.isMine) {
+            networkView.RPC("SetOwner", RPCMode.AllBuffered, Network.player);
+        }
+    }
+
+    [RPC]
+    public void SetOwner(NetworkPlayer player) {
+        this.player = player;
     }
 }
