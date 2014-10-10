@@ -46,16 +46,6 @@ public class GameManager : MonoBehaviour {
             hud = FindObjectOfType<HUD>();
             menu = null;
         }
-        if (Application.loadedLevelName == sceneToLoad)
-        {
-            inGame = true;
-            gameMode.Awake();
-            gameMode.Start();
-        }
-        else
-        {
-            inGame = false;
-        }
     }
 
 	void Update () {
