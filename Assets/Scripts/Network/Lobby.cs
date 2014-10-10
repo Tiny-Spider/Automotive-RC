@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Lobby : MonoBehaviour {
     public static Lobby instance { private set; get; }
 
+    public int loadScreenID = 9;
+
     public delegate void OnPlayerJoined(PlayerProfile profile);
     public event OnPlayerJoined OnJoin = delegate { };
 
@@ -25,7 +27,9 @@ public class Lobby : MonoBehaviour {
 
     [RPC]
     public void StartGame() {
-        Debug.Log("Recived start game message!");
+        Menu menu = FindObjectOfType<Menu>();
+        menu.HidePanels();
+        menu.ShowPanel(loadScreenID);
 
         StartCoroutine(SceneLoader.LoadLevel(GameManager.instance.levelToLoad));
         StartCoroutine(SpawnCar());
@@ -40,7 +44,7 @@ public class Lobby : MonoBehaviour {
 
         OnJoin(profile);
 
-        Debug.Log("Name: " + name + " GUID: " + player.ToString());
+        Debug.Log("Name: " + name + " ID: " + player.ToString());
     }
 
     [RPC]
@@ -58,7 +62,7 @@ public class Lobby : MonoBehaviour {
         Network.Instantiate(GameManager.instance.prefab, Vector3.zero, Quaternion.identity, 0);
 
         // Tell everyone we're ready
-        networkView.RPC("UpdateProfile", RPCMode.AllBuffered, Network.player, "Loaded", "True");
+        //networkView.RPC("UpdateProfile", RPCMode.AllBuffered, Network.player, "Loaded", "True");
     }
 
     // Change profile settings using this
@@ -69,6 +73,10 @@ public class Lobby : MonoBehaviour {
 
     public PlayerProfile GetProfile(NetworkPlayer networkPlayer) {
         return connectedPlayers[networkPlayer];
+    }
+
+    public PlayerProfile GetMyProfile() {
+        return connectedPlayers[Network.player];
     }
 
     public void Clear() {

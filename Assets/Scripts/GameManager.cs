@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
     public string menuScene = "Menu";
     public string levelToLoad = "Test World";
 
+    public Flare[] lensFlares = new Flare[10];
+
     // TEMP
     public GameObject prefab;
 

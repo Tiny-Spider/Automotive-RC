@@ -74,7 +74,8 @@ public class NetworkManager : MonoBehaviour {
         networkView.RPC(name, RPCMode.All);
     }
 
-    // Client Events
+    #region Client
+
     void OnConnectedToServer() {
         StartCoroutine(CreatePlayer());
     }
@@ -95,7 +96,10 @@ public class NetworkManager : MonoBehaviour {
         Debug.Log(error);
     }
 
-    // Server Events
+    #endregion
+
+    #region Server
+
     void OnServerInitialized() {
         StartCoroutine(CreatePlayer());
     }
@@ -107,6 +111,7 @@ public class NetworkManager : MonoBehaviour {
         networkView.RPC("DisconnectPlayer", RPCMode.AllBuffered, player);
     }
 
+    #endregion
 
     IEnumerator CreatePlayer() {
         Menu menu = gameManager.GetMenu();

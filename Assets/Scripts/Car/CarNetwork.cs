@@ -5,7 +5,10 @@ using System.Collections;
 #pragma warning disable 0219
 
 [AddComponentMenu("Car/Network")]
+[RequireComponent(typeof(Car))]
 public class CarNetwork : MonoBehaviour {
+    private Car car;
+
     public WheelCollider wheel_FL;
     public WheelCollider wheel_FR;
     public WheelCollider wheel_RL;
@@ -26,17 +29,20 @@ public class CarNetwork : MonoBehaviour {
     float RL_brakeTorque = 0;
     float RR_brakeTorque = 0;
 
-    bool showHeadLights = false;
-
     Vector3 position = Vector3.zero;
     Quaternion rotation = Quaternion.identity;
     Vector3 velocity = Vector3.zero;
+
+    bool showHeadLights = false;
+    int lightID = 2;
 
     void Awake() {
         if (!(Network.isServer || Network.isClient)) {
             networkView.enabled = false;
             enabled = false;
         }
+
+        car = GetComponent<Car>();
     }
 
     void Update() {
@@ -62,6 +68,10 @@ public class CarNetwork : MonoBehaviour {
             if (headLights.activeInHierarchy != showHeadLights) {
                 headLights.SetActive(showHeadLights);
             }
+
+            if (car.lightID != lightID) {
+                car.SetLight(lightID);
+            }
         }
     }
 
@@ -85,8 +95,7 @@ public class CarNetwork : MonoBehaviour {
             Vector3 velocity = rigidbody.velocity;
 
             bool showHeadLights = headLights.activeInHierarchy;
-
-            stream.Serialize(ref showHeadLights);
+            int lightID = car.lightID;
 
             stream.Serialize(ref FL_steerAngle);
             stream.Serialize(ref FR_steerAngle);
@@ -106,6 +115,7 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref velocity);
 
             stream.Serialize(ref showHeadLights);
+            stream.Serialize(ref lightID);
         }
         else {
             stream.Serialize(ref FL_steerAngle);
@@ -126,6 +136,7 @@ public class CarNetwork : MonoBehaviour {
             stream.Serialize(ref velocity);
 
             stream.Serialize(ref showHeadLights);
+            stream.Serialize(ref lightID);
         }
     }
 }
