@@ -2307,9 +2307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a21a2dbbaac0344ab3a5638dcf72036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 0
+  cars: []
   name: Player 1
   menuScene: Menu
-  levelToLoad: Demo
+  levelToLoad: Demo 1
   lensFlares:
   - {fileID: 12100000, guid: 5681314a26a394990806a2eb6f15a468, type: 2}
   - {fileID: 12100000, guid: 0e5f153f2f9d947ba914bbf16a151626, type: 2}

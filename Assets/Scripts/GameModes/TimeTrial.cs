@@ -13,7 +13,7 @@ public class TimeTrial : Mode {
     GameObject[] checkpoints;
     Dictionary<NetworkPlayer,int>currentCheckpoint = new Dictionary<NetworkPlayer,int>();
     Dictionary<NetworkPlayer, float> timeChecker = new  Dictionary<NetworkPlayer, float>();
-    List<NetworkPlayer> finishedPlayers;
+    List<NetworkPlayer> finishedPlayers = new List<NetworkPlayer>();
 
     public override void Awake()
     {
@@ -23,7 +23,8 @@ public class TimeTrial : Mode {
 
 	public override void Start () {
         startTime = Time.deltaTime;
-        finishedPlayers.Clear();
+        Debug.Log("playerList count: " + currentCheckpoint.Count);
+        //finishedPlayers.Clear();
 	}
 	
 	public override void Update () {
@@ -144,7 +145,7 @@ public class Checkpoint : MonoBehaviour
     /// <param name="other"></param>
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Checkpoint Number: " + checkpointNumber +" Car: "+  other.gameObject.transform.parent.parent.gameObject.networkView.owner);
+        Debug.Log("Checkpoint Number: " + checkpointNumber +" Car: "+  other.GetComponentInParent<Car>().player);
         //timeTrial.OnTriggerEnter(other.gameObject.transform.parent.parent.gameObject.networkView.owner, checkpointNumber, this);
     }
 

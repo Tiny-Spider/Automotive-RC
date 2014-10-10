@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class Car : MonoBehaviour {
-    public NetworkPlayer player;
-
     public float maxSpeed = 100.0F;
     public float maxSpeedBackward = 35.0F;
     public float engineTorque = 225.0F;
@@ -24,6 +22,8 @@ public class Car : MonoBehaviour {
 
     public float steerAngle = 4.0F;
 
+    public NetworkPlayer player;
+
     public int lightID { private set; get; }
     public Light[] lights;
 
@@ -35,14 +35,17 @@ public class Car : MonoBehaviour {
         }
     }
 
-    void Start() {
-        if (networkView.isMine) {
+    void Start()
+    {
+        if (networkView.isMine)
+        {
             networkView.RPC("SetOwner", RPCMode.AllBuffered, Network.player);
         }
     }
 
     [RPC]
-    public void SetOwner(NetworkPlayer player) {
+    public void SetOwner(NetworkPlayer player)
+    {
         this.player = player;
     }
 }

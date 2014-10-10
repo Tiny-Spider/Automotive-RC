@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
             hud = null;
         } else {
             hud = FindObjectOfType<HUD>();
-            gameMode = gameObject.AddComponent<CoinCollect>();
+            gameMode = gameObject.AddComponent<TimeTrial>();
             menu = null;
         }
     }
