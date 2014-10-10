@@ -62,13 +62,13 @@ public class Lobby : MonoBehaviour {
         Network.Instantiate(GameManager.instance.prefab, Vector3.zero, Quaternion.identity, 0);
 
         // Tell everyone we're ready
-        //networkView.RPC("UpdateProfile", RPCMode.AllBuffered, Network.player, "Loaded", "True");
+        networkView.RPC("UpdateProfile", RPCMode.AllBuffered, Network.player, PlayerProfile.LoadedValueName, bool.TrueString);
     }
 
     // Change profile settings using this
     [RPC]
     public void UpdateProfile(NetworkPlayer player, string valueName, string value) {
-
+        connectedPlayers[player].UpdateValue(valueName, value);
     }
 
     public PlayerProfile GetProfile(NetworkPlayer networkPlayer) {
