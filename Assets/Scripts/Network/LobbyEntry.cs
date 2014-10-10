@@ -4,7 +4,10 @@ using System.Collections;
 
 public class LobbyEntry : MonoBehaviour {
     public Text nameText;
+    public Image carImage;
     public Button kickButton;
+
+    public string car;
     public NetworkPlayer player;
 
     void Awake() {

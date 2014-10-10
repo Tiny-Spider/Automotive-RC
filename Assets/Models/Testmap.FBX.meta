@@ -1,16 +1,20 @@
 fileFormatVersion: 2
-guid: d5bdd94fad9a0dc46960400607647ce4
+guid: e072089611ac8594babc6d5e85314552
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: Box001_MeshPart0
-    100002: Box001_MeshPart1
-    100004: Box001_MeshPart2
-    100006: //RootNode
-    400000: Box001_MeshPart0
-    400002: Box001_MeshPart1
-    400004: Box001_MeshPart2
-    400006: //RootNode
+    100000: Box001
+    100002: Box001_MeshPart0
+    100004: Box001_MeshPart1
+    100006: Box001_MeshPart2
+    100008: Sky001
+    100010: //RootNode
+    400000: Box001
+    400002: Box001_MeshPart0
+    400004: Box001_MeshPart1
+    400006: Box001_MeshPart2
+    400008: Sky001
+    400010: //RootNode
     2300000: Box001_MeshPart0
     2300002: Box001_MeshPart1
     2300004: Box001_MeshPart2
@@ -40,7 +44,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .0299999993
+    globalScale: .5
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

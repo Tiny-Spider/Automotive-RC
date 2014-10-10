@@ -2,31 +2,14 @@
 using System.Collections;
 
 [AddComponentMenu("Car/Controller")]
+[RequireComponent(typeof(Car))]
 public class CarController : MonoBehaviour {
+    private Car car;
+
     public WheelCollider wheel_FL;
     public WheelCollider wheel_FR;
     public WheelCollider wheel_RL;
     public WheelCollider wheel_RR;
-
-    public float maxSpeed = 150.0F;
-    public float maxSpeedBackward = 30.0F;
-    public float engineTorque = 600.0F;
-    public float maxEngineRPM = 3000.0F;
-    public float minEngineRPM = 1000.0F;
-
-    public bool wheel_FL_power = true;
-    public bool wheel_FR_power = true;
-    public bool wheel_RL_power = false;
-    public bool wheel_RR_power = false;
-
-    public float breakPower = 600.0F;
-
-    public bool wheel_FL_break = false;
-    public bool wheel_FR_break = false;
-    public bool wheel_RL_break = true;
-    public bool wheel_RR_break = true;
-
-    public float steerAngle = 10.0F;
     // KM/U (m/s * 3.6 = km/u)
     public float speed = 0.0F;
 
@@ -47,6 +30,8 @@ public class CarController : MonoBehaviour {
             }
         }
 
+        car = GetComponent<Car>();
+
         FindObjectOfType<CarCamera>().target = transform;
     }
 
@@ -64,32 +49,32 @@ public class CarController : MonoBehaviour {
 
         //Audio
         if (motorAudio) {
-            motorAudio.pitch = Mathf.Abs(engineRPM / maxEngineRPM) + 1.0F;
+            motorAudio.pitch = Mathf.Abs(engineRPM / car.maxEngineRPM) + 1.0F;
             if (motorAudio.pitch > 2.0) {
                 motorAudio.pitch = 2.0F;
             }
         }
 
         //Steering
-        wheel_FL.steerAngle = steerAngle * Input.GetAxis("Horizontal");
-        wheel_FR.steerAngle = steerAngle * Input.GetAxis("Horizontal");
+        wheel_FL.steerAngle = car.steerAngle * Input.GetAxis("Horizontal");
+        wheel_FR.steerAngle = car.steerAngle * Input.GetAxis("Horizontal");
 
         //Speed Limiter.
-        if (motorInput < 0.0F ? speed > maxSpeedBackward : speed > maxSpeed) {
+        if (motorInput < 0.0F ? speed > car.maxSpeedBackward : speed > car.maxSpeed) {
             wheel_FL.motorTorque = 0;
             wheel_FR.motorTorque = 0;
             wheel_RL.motorTorque = 0;
             wheel_RR.motorTorque = 0;
         }
         else {
-            if (wheel_FL_power)
-                wheel_FL.motorTorque = engineTorque * Input.GetAxis("Vertical");
-            if (wheel_FR_power)
-                wheel_FR.motorTorque = engineTorque * Input.GetAxis("Vertical");
-            if (wheel_RL_power)
-                wheel_RL.motorTorque = engineTorque * Input.GetAxis("Vertical");
-            if (wheel_RR_power)
-                wheel_RR.motorTorque = engineTorque * Input.GetAxis("Vertical");
+            if (car.wheel_FL_power)
+                wheel_FL.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+            if (car.wheel_FR_power)
+                wheel_FR.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+            if (car.wheel_RL_power)
+                wheel_RL.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+            if (car.wheel_RR_power)
+                wheel_RR.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
         }
 
         //SkidAudio.
@@ -102,14 +87,14 @@ public class CarController : MonoBehaviour {
 
         //HandBrake
         if (Input.GetButton("Jump")) {
-            if (wheel_FL_break)
-                wheel_FL.brakeTorque = breakPower;
-            if (wheel_FR_break)
-                wheel_FR.brakeTorque = breakPower;
-            if (wheel_RL_break)
-                wheel_RL.brakeTorque = breakPower;
-            if (wheel_RR_break)
-                wheel_RR.brakeTorque = breakPower;
+            if (car.wheel_FL_break)
+                wheel_FL.brakeTorque = car.breakPower;
+            if (car.wheel_FR_break)
+                wheel_FR.brakeTorque = car.breakPower;
+            if (car.wheel_RL_break)
+                wheel_RL.brakeTorque = car.breakPower;
+            if (car.wheel_RR_break)
+                wheel_RR.brakeTorque = car.breakPower;
 
             wheel_FL.motorTorque = 0;
             wheel_FR.motorTorque = 0;
@@ -135,6 +120,13 @@ public class CarController : MonoBehaviour {
             transform.position = Vector3.zero;
             transform.rigidbody.velocity = Vector3.zero;
             transform.rotation = Quaternion.identity;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if (Input.GetKeyDown(i + "")) {
+                car.SetLight(i);
+                break;
+            }
         }
     }
 }
