@@ -17,6 +17,7 @@ public class TimeTrial : Mode {
 
     public override void Awake()
     {
+        InitializePlayers();
         InitializeCheckPoints();
     }
 
@@ -29,11 +30,22 @@ public class TimeTrial : Mode {
         time += Time.deltaTime;
 	}
 
-    public override void OnRegisterCar(GameObject car)
+    //public override void OnRegisterCar(GameObject car)
+    //{
+    //    currentCheckpoint.Add(car.networkView.owner, 0);
+    //    timeChecker.Add(car.networkView.owner, 0);
+    //    Debug.Log(car.gameObject.name);
+    //}
+
+    void InitializePlayers()
     {
-        currentCheckpoint.Add(car.networkView.owner, 0);
-        timeChecker.Add(car.networkView.owner, 0);
-        Debug.Log(car.gameObject.name);
+        foreach (PlayerProfile player in playerList)
+        {
+            currentCheckpoint.Add(player.GetOwner(),0);
+            timeChecker.Add(player.GetOwner(), 0);
+            //currentCheckpoint.Add(player.ne);
+            //timeChecker.Add(car.networkView.owner, 0);
+        }
     }
 
     void InitializeCheckPoints()
@@ -60,7 +72,7 @@ public class TimeTrial : Mode {
         Debug.Log("Amount of checkpoints: " + checkpoints.Length);
     }
 
-    public void OnTriggerEnter(NetworkPlayer player, int checkpointNR, Checkpoint checkpoint)
+    public void OnCheckPointTriggerEnter(NetworkPlayer player, int checkpointNR, Checkpoint checkpoint)
     {
         Debug.Log("Target checkpoint NR: " + currentCheckpoint[player]);
         Debug.Log("Trigger enter 1");
@@ -133,7 +145,7 @@ public class Checkpoint : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Checkpoint Number: " + checkpointNumber +" Car: "+  other.gameObject.transform.parent.parent.gameObject.networkView.owner);
-        timeTrial.OnTriggerEnter(other.gameObject.transform.parent.parent.gameObject.networkView.owner, checkpointNumber, this);
+        //timeTrial.OnTriggerEnter(other.gameObject.transform.parent.parent.gameObject.networkView.owner, checkpointNumber, this);
     }
 
     /// <summary>

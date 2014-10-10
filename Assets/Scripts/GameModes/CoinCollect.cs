@@ -47,11 +47,6 @@ public class CoinCollect : FreeMode {
             coinCounter.Values.Max();
         }
     }
-
-    public override void OnRegisterCar(GameObject car)
-    {
-        coinCounter.Add(car.networkView.owner, 0);
-    }
 }
 
 public class Coin : MonoBehaviour

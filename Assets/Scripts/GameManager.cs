@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
-        gameMode = new CoinCollect();
     }
 
     public void SetName(InputField field) { 
@@ -44,25 +43,16 @@ public class GameManager : MonoBehaviour {
             hud = null;
         } else {
             hud = FindObjectOfType<HUD>();
+            gameMode = gameObject.AddComponent<CoinCollect>();
             menu = null;
         }
     }
 
-	void Update () {
-        if(inGame)
-        gameMode.Update();
-	}
     public HUD GetHUD() {
         return hud;
     }
 
     public Menu GetMenu() {
         return menu;
-    }
-
-    public void RegisterCar(GameObject car)
-    {
-        cars.Add(car);
-        gameMode.OnRegisterCar(car);
     }
 }
