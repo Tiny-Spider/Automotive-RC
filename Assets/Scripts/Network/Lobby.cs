@@ -2,36 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Lobby : MonoBehaviour {
-    public static Lobby instance { private set; get; }
+public class Lobby : Singleton<Lobby> {
+    public string loadScreenPanel;
 
-    public int loadScreenID = 9;
+    public string track = "none";
+    public string mode = "none";
+    public string name = "Player 1";
 
-    public delegate void OnPlayerJoined(PlayerProfile profile);
+    public delegate void OnPlayerJoined(NetworkPlayer player);
     public event OnPlayerJoined OnJoin = delegate { };
 
-    public delegate void OnPlayerDisconnect(PlayerProfile profile);
+    public delegate void OnPlayerDisconnect(NetworkPlayer player);
     public event OnPlayerDisconnect OnDisconnect = delegate { };
 
-    private Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
+    public delegate void OnPlayerUpdate(NetworkPlayer player);
+    public event OnPlayerUpdate OnUpdate = delegate { };
 
-    void Awake() {
-        if (!instance) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }
-    }
+    private Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
 
     [RPC]
     public void StartGame() {
         Menu menu = FindObjectOfType<Menu>();
         menu.HidePanels();
-        menu.ShowPanel(loadScreenID);
+        menu.ShowPanel(loadScreenPanel);
 
-        StartCoroutine(SceneLoader.LoadLevel(GameManager.instance.levelToLoad));
+        StartCoroutine(SceneLoader.LoadLevel(track));
         StartCoroutine(SpawnCar());
     }
 
@@ -42,16 +37,16 @@ public class Lobby : MonoBehaviour {
 
         connectedPlayers.Add(player, profile);
 
-        OnJoin(profile);
+        OnJoin(player);
 
         Debug.Log("Name: " + name + " ID: " + player.ToString());
     }
 
     [RPC]
-    public void DisconnectPlayer(NetworkPlayer networkPlayer) {
-        OnDisconnect(connectedPlayers[networkPlayer]);
+    public void DisconnectPlayer(NetworkPlayer player) {
+        OnDisconnect(player);
 
-        connectedPlayers.Remove(networkPlayer);
+        connectedPlayers.Remove(player);
     }
 
     private IEnumerator SpawnCar() {
@@ -59,20 +54,43 @@ public class Lobby : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
 
-        Network.Instantiate(GameManager.instance.prefab, Vector3.zero, Quaternion.identity, 0);
+        GameObject car = CarManager.instance.GetCar(GetMyProfile().selectedCar).prefab.gameObject;
+        Network.Instantiate(car, Vector3.zero, Quaternion.identity, 0);
 
         // Tell everyone we're ready
-        networkView.RPC("UpdateProfile", RPCMode.AllBuffered, Network.player, PlayerProfile.LoadedValueName, bool.TrueString);
+        UpdateProfile(Network.player, PlayerProfile.LOADED, bool.TrueString);
     }
 
-    // Change profile settings using this
     [RPC]
     public void UpdateProfile(NetworkPlayer player, string valueName, string value) {
+        if (Network.player.Equals(player)) {
+            networkView.RPC("UpdateProfile", RPCMode.OthersBuffered, Network.player, valueName, value);
+        }
+
         connectedPlayers[player].UpdateValue(valueName, value);
+        OnUpdate(player);
     }
 
-    public PlayerProfile GetProfile(NetworkPlayer networkPlayer) {
-        return connectedPlayers[networkPlayer];
+    [RPC]
+    public void SetTrack(string track) {
+        if (Network.isServer) {
+            networkView.RPC("SetTrack", RPCMode.OthersBuffered, track);
+        }
+
+        this.track = track;
+    }
+
+    [RPC]
+    public void SetMode(string mode) {
+        if (Network.isServer) {
+            networkView.RPC("SetMode", RPCMode.OthersBuffered, mode);
+        }
+
+        this.mode = mode;
+    }
+
+    public PlayerProfile GetProfile(NetworkPlayer player) {
+        return connectedPlayers[player];
     }
 
     public PlayerProfile GetMyProfile() {

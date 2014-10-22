@@ -2,32 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
-    public static GameManager instance { private set; get; }
+public class GameManager : Singleton<GameManager> {
     private Menu menu;
     private HUD hud;
 
-    public string name = "Player";
     public string menuScene = "Menu";
-    public string levelToLoad = "Test World";
 
     public Flare[] lensFlares = new Flare[10];
-
-    // TEMP
-    public GameObject prefab;
-
-    void Awake() {
-        if (!instance) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        } else {
-            Destroy(gameObject);
-        }
-    }
-
-    public void SetName(InputField field) { 
-        name = field.value; 
-    }
 
 	void Start () {
         OnLevelWasLoaded(Application.loadedLevel);

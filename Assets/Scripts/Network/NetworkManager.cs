@@ -4,12 +4,8 @@ using System;
 using System.Collections;
 
 [RequireComponent(typeof(Lobby))]
-public class NetworkManager : MonoBehaviour {
-    public static NetworkManager instance { private set; get; }
-    public GameManager gameManager;
-    public Lobby lobby;
-
-    public int lobbyPanelID = 1;
+public class NetworkManager : Singleton<NetworkManager> {
+    public string lobbyPanel;
 
     public bool useNAT = false;
     public int port = 0;
@@ -33,16 +29,6 @@ public class NetworkManager : MonoBehaviour {
 
     // ================================================================================= //
 
-    void Awake() {
-        if (!instance) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }
-    }
-
     public void StartServer() {
         NetworkConnectionError error = Network.InitializeServer(maxPlayers, port, useNAT);
 
@@ -65,13 +51,9 @@ public class NetworkManager : MonoBehaviour {
 
     public void Disconnect() {
         Network.Disconnect();
-        lobby.Clear();
+        Lobby.instance.Clear();
 
         MasterServer.UnregisterHost();
-    }
-
-    public void SendRPC(string name) {
-        networkView.RPC(name, RPCMode.All);
     }
 
     #region Client
@@ -89,7 +71,7 @@ public class NetworkManager : MonoBehaviour {
             else
                 Debug.Log("Successfully diconnected from the server");
 
-        Application.LoadLevel(gameManager.menuScene);
+        Application.LoadLevel(GameManager.instance.menuScene);
     }
 
     void OnFailedToConnect(NetworkConnectionError error) {
@@ -114,12 +96,12 @@ public class NetworkManager : MonoBehaviour {
     #endregion
 
     IEnumerator CreatePlayer() {
-        Menu menu = gameManager.GetMenu();
+        Menu menu = GameManager.instance.GetMenu();
         menu.HidePanels();
-        menu.ShowPanel(lobbyPanelID);
+        menu.ShowPanel(lobbyPanel);
 
         yield return new WaitForFixedUpdate();
 
-        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, gameManager.name);
+        networkView.RPC("AddPlayer", RPCMode.AllBuffered, Network.player, Lobby.instance.name);
     }
 }
