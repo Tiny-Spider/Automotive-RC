@@ -10,9 +10,15 @@ public class LobbyEntry : MonoBehaviour {
 
     public NetworkPlayer player;
 
-    void Awake() {
+    public void SetPlayer(NetworkPlayer player) {
+        this.player = player;
+
         // Can't kick yourself, dummy :P
-        if (player == Network.player) {
+        Debug.Log("Awake");
+        Debug.Log(player.ToString() + " - " + Network.player.ToString());
+
+        if (player.Equals(Network.player)) {
+            Debug.Log("IZ MAH OWN");
             kickButton.gameObject.SetActive(false);
             carButton.gameObject.SetActive(true);
         }

@@ -8,8 +8,6 @@ public class GameManager : Singleton<GameManager> {
 
     public string menuScene = "Menu";
 
-    public Flare[] lensFlares = new Flare[10];
-
 	void Start () {
         OnLevelWasLoaded(Application.loadedLevel);
 	}

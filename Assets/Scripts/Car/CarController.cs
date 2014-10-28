@@ -122,12 +122,5 @@ public class CarController : MonoBehaviour {
             transform.rigidbody.velocity = Vector3.zero;
             transform.rotation = Quaternion.identity;
         }
-
-        for (int i = 0; i < 10; i++) {
-            if (Input.GetKeyDown(i + "")) {
-                car.SetLight(i);
-                break;
-            }
-        }
     }
 }

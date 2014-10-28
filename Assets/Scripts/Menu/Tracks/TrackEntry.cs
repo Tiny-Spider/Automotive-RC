@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
 public class TrackEntry : MonoBehaviour {
@@ -9,9 +10,16 @@ public class TrackEntry : MonoBehaviour {
     private string trackName;
 
     public void SetTrack(TrackManager.TrackData track) {
-        trackName = track.sceneName;
+        trackName = track.name;
 
         image.sprite = track.image;
+
+        string text = track.name;
+        text += Environment.NewLine + Environment.NewLine;
+        text += track.description;
+
+        image.sprite = track.image;
+        description.text = text;
     }
 
     public void HidePanel() {

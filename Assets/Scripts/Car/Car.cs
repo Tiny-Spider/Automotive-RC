@@ -24,17 +24,6 @@ public class Car : MonoBehaviour {
 
     public float steerAngle = 4.0F;
 
-    public int lightID { private set; get; }
-    public Light[] lights;
-
-    public void SetLight(int id) {
-        lightID = id;
-
-        foreach (Light light in lights) {
-            light.flare = GameManager.instance.lensFlares[id];
-        }
-    }
-
     void Start() {
         if (networkView.isMine) {
             networkView.RPC("SetOwner", RPCMode.AllBuffered, Network.player);

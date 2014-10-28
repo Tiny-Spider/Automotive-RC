@@ -41,6 +41,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
+  - 114: {fileID: 11400012}
   m_Layer: 10
   m_Name: Wheel_FL
   m_TagString: Untagged
@@ -58,6 +59,7 @@ GameObject:
   - 4: {fileID: 400006}
   - 33: {fileID: 3300002}
   - 23: {fileID: 2300002}
+  - 114: {fileID: 11400014}
   m_Layer: 10
   m_Name: Wheel_FR
   m_TagString: Untagged
@@ -75,6 +77,7 @@ GameObject:
   - 4: {fileID: 400008}
   - 33: {fileID: 3300004}
   - 23: {fileID: 2300004}
+  - 114: {fileID: 11400016}
   m_Layer: 10
   m_Name: Wheel_RL
   m_TagString: Untagged
@@ -92,6 +95,7 @@ GameObject:
   - 4: {fileID: 400010}
   - 33: {fileID: 3300006}
   - 23: {fileID: 2300006}
+  - 114: {fileID: 11400018}
   m_Layer: 10
   m_Name: Wheel_RR
   m_TagString: Untagged
@@ -405,8 +409,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100016}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: -.106866948, y: .511311829, z: -.114027672}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -.106866971, y: .511312008, z: -.114027694}
+  m_LocalScale: {x: .99999994, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400022}
   m_RootOrder: 2
@@ -471,7 +475,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 17.1823616, y: -9.48029804, z: 44.1617584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400024}
@@ -760,8 +764,8 @@ Light:
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1.79999995
-  m_Range: 45
-  m_SpotAngle: 62
+  m_Range: 15
+  m_SpotAngle: 35
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -778,7 +782,7 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 1
+  m_Lightmapping: 0
   m_ShadowSamples: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -795,8 +799,8 @@ Light:
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1.79999995
-  m_Range: 45
-  m_SpotAngle: 62
+  m_Range: 15
+  m_SpotAngle: 35
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -813,7 +817,7 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 1
+  m_Lightmapping: 0
   m_ShadowSamples: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -830,10 +834,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7d8020cfb7ae743a67772588d43596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wheel_FL: {fileID: 14600004}
-  wheel_FR: {fileID: 14600006}
-  wheel_RL: {fileID: 14600000}
-  wheel_RR: {fileID: 14600002}
+  wheels:
+  - {fileID: 14600004}
+  - {fileID: 14600006}
+  - {fileID: 14600000}
+  - {fileID: 14600002}
   headLights: {fileID: 100034}
 --- !u!114 &11400002
 MonoBehaviour:
@@ -922,9 +927,62 @@ MonoBehaviour:
   wheel_RL_break: 0
   wheel_RR_break: 0
   steerAngle: 4
-  lights:
-  - {fileID: 10800002}
-  - {fileID: 10800000}
+--- !u!114 &11400012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9254aade1d15e2c438532db516c0b449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correspondingCollider: {fileID: 14600004}
+  slipPrefab: {fileID: 0}
+  slipSpeed: 2
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9254aade1d15e2c438532db516c0b449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correspondingCollider: {fileID: 14600006}
+  slipPrefab: {fileID: 0}
+  slipSpeed: 2
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9254aade1d15e2c438532db516c0b449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correspondingCollider: {fileID: 14600000}
+  slipPrefab: {fileID: 100000, guid: 1504c6d5ff5ebd345b7f2c3b414518ed, type: 2}
+  slipSpeed: 2
+--- !u!114 &11400018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9254aade1d15e2c438532db516c0b449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correspondingCollider: {fileID: 14600002}
+  slipPrefab: {fileID: 100000, guid: 1504c6d5ff5ebd345b7f2c3b414518ed, type: 2}
+  slipSpeed: 2
 --- !u!146 &14600000
 WheelCollider:
   m_ObjectHideFlags: 1
@@ -946,7 +1004,7 @@ WheelCollider:
     asymptoteValue: 10000
     stiffnessFactor: 1
   m_SidewaysFriction:
-    extremumSlip: .00100000005
+    extremumSlip: 1
     extremumValue: 20000
     asymptoteSlip: 2
     asymptoteValue: 10000
@@ -973,7 +1031,7 @@ WheelCollider:
     asymptoteValue: 10000
     stiffnessFactor: 1
   m_SidewaysFriction:
-    extremumSlip: .00100000005
+    extremumSlip: 1
     extremumValue: 20000
     asymptoteSlip: 2
     asymptoteValue: 10000
@@ -1000,7 +1058,7 @@ WheelCollider:
     asymptoteValue: 10000
     stiffnessFactor: 1
   m_SidewaysFriction:
-    extremumSlip: .00100000005
+    extremumSlip: 1
     extremumValue: 20000
     asymptoteSlip: 2
     asymptoteValue: 10000
@@ -1027,7 +1085,7 @@ WheelCollider:
     asymptoteValue: 10000
     stiffnessFactor: 1
   m_SidewaysFriction:
-    extremumSlip: .00100000005
+    extremumSlip: 1
     extremumValue: 20000
     asymptoteSlip: 2
     asymptoteValue: 10000

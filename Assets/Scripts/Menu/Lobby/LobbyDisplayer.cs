@@ -31,7 +31,7 @@ public class LobbyDisplayer : MonoBehaviour {
         LobbyEntry lobbyEntry = entryGameObject.GetComponent<LobbyEntry>();
         lobbyEntry.transform.SetParent(transform);
 
-        lobbyEntry.player = player;
+        lobbyEntry.SetPlayer(player);
         lobbyEntry.UpdateEntry();
 
         lobbyEntries.Add(player, lobbyEntry);

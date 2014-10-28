@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class Lobby : Singleton<Lobby> {
     public string loadScreenPanel;
 
-    public string track = "none";
-    public string mode = "none";
+    public string track = "";
+    public string mode = "";
     public string name = "Player 1";
 
     public delegate void OnPlayerJoined(NetworkPlayer player);
@@ -18,6 +18,9 @@ public class Lobby : Singleton<Lobby> {
     public delegate void OnPlayerUpdate(NetworkPlayer player);
     public event OnPlayerUpdate OnUpdate = delegate { };
 
+    public delegate void OnServerUpdate();
+    public event OnServerUpdate OnUpdateServer = delegate { };
+
     private Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
 
     [RPC]
@@ -26,7 +29,9 @@ public class Lobby : Singleton<Lobby> {
         menu.HidePanels();
         menu.ShowPanel(loadScreenPanel);
 
-        StartCoroutine(SceneLoader.LoadLevel(track));
+        string sceneName = TrackManager.instance.GetTrack(track).sceneName;
+
+        StartCoroutine(SceneLoader.LoadLevel(sceneName));
         StartCoroutine(SpawnCar());
     }
 
@@ -39,7 +44,7 @@ public class Lobby : Singleton<Lobby> {
 
         OnJoin(player);
 
-        Debug.Log("Name: " + name + " ID: " + player.ToString());
+        Debug.Log("Player Connected: [Name: " + name + " ID: " + player.ToString() + "]");
     }
 
     [RPC]
@@ -78,6 +83,7 @@ public class Lobby : Singleton<Lobby> {
         }
 
         this.track = track;
+        OnUpdateServer();
     }
 
     [RPC]
@@ -87,6 +93,11 @@ public class Lobby : Singleton<Lobby> {
         }
 
         this.mode = mode;
+        OnUpdateServer();
+    }
+
+    public List<PlayerProfile> GetProfiles() {
+        return new List<PlayerProfile>(connectedPlayers.Values);
     }
 
     public PlayerProfile GetProfile(NetworkPlayer player) {
