@@ -17,13 +17,13 @@ public class TimeTrial : Mode {
 
     public override void Awake()
     {
-        InitializePlayers();
         InitializeCheckPoints();
+        EnableCarControllers(false);     
     }
 
 	public override void Start () {
+        StartCoroutine(PlayerCheck());
         startTime = Time.deltaTime;
-        Debug.Log("playerList count: " + currentCheckpoint.Count);
         //finishedPlayers.Clear();
 	}
 	
@@ -38,16 +38,19 @@ public class TimeTrial : Mode {
     //    Debug.Log(car.gameObject.name);
     //}
 
-    void InitializePlayers()
+    public override void InitializePlayers()
     {
-        foreach (PlayerProfile player in playerList)
+        foreach (NetworkPlayer player in Lobby.instance.connectedPlayers.Keys)
         {
-            currentCheckpoint.Add(player.GetOwner(),0);
-            timeChecker.Add(player.GetOwner(), 0);
+            currentCheckpoint.Add(player,0);
+            timeChecker.Add(player, 0);
             //currentCheckpoint.Add(player.ne);
             //timeChecker.Add(car.networkView.owner, 0);
         }
+        Debug.Log("playerList count: " + currentCheckpoint.Count);
     }
+
+
 
     void InitializeCheckPoints()
     {
@@ -146,7 +149,10 @@ public class Checkpoint : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Checkpoint Number: " + checkpointNumber +" Car: "+  other.GetComponentInParent<Car>().player);
-        //timeTrial.OnTriggerEnter(other.gameObject.transform.parent.parent.gameObject.networkView.owner, checkpointNumber, this);
+        if (other.GetComponentInParent<Car>().networkView.isMine)
+        {
+            timeTrial.OnCheckPointTriggerEnter(other.gameObject.transform.parent.parent.gameObject.networkView.owner, checkpointNumber, this);
+        }
     }
 
     /// <summary>

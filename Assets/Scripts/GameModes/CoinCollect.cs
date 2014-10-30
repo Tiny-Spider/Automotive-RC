@@ -39,13 +39,48 @@ public class CoinCollect : FreeMode {
         }
     }
 
+    public override void InitializePlayers()
+    {
+        
+    }
+
     public void GameOver()
     {
         isPlaying = false;
-        for (int i = 0; i < coinCounter.Count; ) 
+        CalculateResults();
+    }
+
+    private void CalculateResults()
+    {
+        finishedPlayers.Clear();
+        int maxValue;
+        NetworkPlayer playerToAdd;
+        int tempCount = coinCounter.Count;
+        for (int i = 0; i < tempCount; i++)
         {
-            coinCounter.Values.Max();
+            maxValue = -1;
+            playerToAdd = carList[0];
+            bool check = false;
+            foreach (NetworkPlayer player in coinCounter.Keys)
+            {
+                if (coinCounter[player] > maxValue)
+                {
+                    check = true;
+                    maxValue = coinCounter[player];
+                    playerToAdd = player;
+                }
+            }
+            if (!check)
+            {
+                Debug.LogError("No MAX value was found in for loop Nr." + i);
+            }
+            finishedPlayers.Add(playerToAdd);
         }
+    }
+
+    void checkScore()
+    {
+
     }
 }
 

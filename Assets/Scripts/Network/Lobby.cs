@@ -13,7 +13,7 @@ public class Lobby : MonoBehaviour {
     public delegate void OnPlayerDisconnect(PlayerProfile profile);
     public event OnPlayerDisconnect OnDisconnect = delegate { };
 
-    private Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
+    public Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
 
     void Awake() {
         if (!instance) {
