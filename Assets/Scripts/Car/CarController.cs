@@ -10,6 +10,7 @@ public class CarController : MonoBehaviour {
     public WheelCollider wheel_FR;
     public WheelCollider wheel_RL;
     public WheelCollider wheel_RR;
+
     // KM/U (m/s * 3.6 = km/u)
     public float speed = 0.0F;
 
@@ -120,13 +121,6 @@ public class CarController : MonoBehaviour {
             transform.position = Vector3.zero;
             transform.rigidbody.velocity = Vector3.zero;
             transform.rotation = Quaternion.identity;
-        }
-
-        for (int i = 0; i < 10; i++) {
-            if (Input.GetKeyDown(i + "")) {
-                car.SetLight(i);
-                break;
-            }
         }
     }
 }

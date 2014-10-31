@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Car : MonoBehaviour {
+    public NetworkPlayer player;
+
     public float maxSpeed = 100.0F;
     public float maxSpeedBackward = 35.0F;
     public float engineTorque = 225.0F;

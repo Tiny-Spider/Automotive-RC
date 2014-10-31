@@ -53,6 +53,7 @@
      <None Include="Assets\ProCore\Shared\About\README.txt" />
      <None Include="Assets\ProCore\Prototype\Shader\DiffuseVertexColorTransparency.shader" />
      <None Include="Assets\ProCore\Prototype\Shader\UnlitColor.shader" />
+     <None Include="Assets\Shaders\Glass.shader" />
      <None Include="Assets\ProCore\Prototype\Shader\UnlitColor-Overlay.shader" />
      <None Include="Assets\ProCore\Prototype\Shader\DiffuseVertexColorEmission.shader" />
  <Reference Include="UnityEngine.UI">
