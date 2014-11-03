@@ -68,14 +68,16 @@ public class CarController : MonoBehaviour {
             wheel_RR.motorTorque = 0;
         }
         else {
+            float inputAxis = Input.GetAxis("Xbox360ControllerTriggers") != 0.0F ? Input.GetAxis("Xbox360ControllerTriggers") : Input.GetAxis("Vertical");
+
             if (car.wheel_FL_power)
-                wheel_FL.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+                wheel_FL.motorTorque = car.engineTorque * inputAxis;
             if (car.wheel_FR_power)
-                wheel_FR.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+                wheel_FR.motorTorque = car.engineTorque * inputAxis;
             if (car.wheel_RL_power)
-                wheel_RL.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+                wheel_RL.motorTorque = car.engineTorque * inputAxis;
             if (car.wheel_RR_power)
-                wheel_RR.motorTorque = car.engineTorque * Input.GetAxis("Vertical");
+                wheel_RR.motorTorque = car.engineTorque * inputAxis;
         }
 
         //SkidAudio.

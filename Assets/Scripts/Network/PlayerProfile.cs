@@ -5,6 +5,7 @@ public class PlayerProfile {
     public const string NAME = "name";
     public const string CAR = "car";
     public const string LOADED = "loaded";
+    public const string READY = "ready";
     public const string START_POSITION = "startPosition";
 
     private NetworkPlayer owner;
@@ -12,7 +13,9 @@ public class PlayerProfile {
     public string name;
     public int startPosition;
     public string selectedCar;
+
     public bool loaded = false;
+    public bool ready = false;
 
     public GameObject car;
 
@@ -34,6 +37,9 @@ public class PlayerProfile {
                 break;
             case LOADED:
                 loaded = value.Equals(bool.TrueString);
+                break;
+            case READY:
+                ready = value.Equals(bool.TrueString);
                 break;
             case START_POSITION:
                 int.TryParse(value, out startPosition);

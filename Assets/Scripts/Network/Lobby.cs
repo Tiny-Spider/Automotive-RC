@@ -48,7 +48,7 @@ public class Lobby : Singleton<Lobby> {
 
         OnJoin(player);
 
-        Debug.Log("Player Connected: [Name: " + name + " ID: " + player.ToString() + "]");
+        Debug.Log("Player Connected: (Name: [" + name + "] ID: [" + player.ToString() + "])");
     }
 
     [RPC]
@@ -63,8 +63,20 @@ public class Lobby : Singleton<Lobby> {
             yield return new WaitForEndOfFrame();
         }
 
-        GameObject car = CarManager.instance.GetCar(GetMyProfile().selectedCar).prefab.gameObject;
-        Network.Instantiate(car, Vector3.zero, Quaternion.identity, 0);
+        Track track = FindObjectOfType<Track>();
+        PlayerProfile profile = GetMyProfile();
+        GameObject car = CarManager.instance.GetCar(profile.selectedCar).prefab.gameObject;
+
+        if (track) {
+            int position = profile.startPosition;
+            GameObject spawnPoint = position > track.spawnPoints.Length ? track.spawnPoints[position] : track.spawnPoints[0];
+
+            Network.Instantiate(car, spawnPoint.transform.position, spawnPoint.transform.rotation, 0);
+        }
+        else {
+            // Fallback
+            Network.Instantiate(car, Vector3.zero, Quaternion.identity, 0);
+        }
 
         // Tell everyone we're ready
         UpdateProfile(Network.player, PlayerProfile.LOADED, bool.TrueString);

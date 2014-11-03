@@ -35,7 +35,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         if (error == NetworkConnectionError.NoError)
             MasterServer.RegisterHost("AutoMotiveRC", "Game1", "Open Game");
         else
-            Debug.LogError("Error on network initializing: " + error.ToString());
+            Debug.LogError("Error on network initializing: [" + error.ToString() + "]");
     }
 
     public void Connect(InputField field) {
@@ -45,7 +45,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         }
         catch (Exception ex) {
             field.value = ex.Message;
-            Debug.LogError("Error: " + ex); 
+            Debug.LogError("Error: [" + ex + "]"); 
         }
     }
 
