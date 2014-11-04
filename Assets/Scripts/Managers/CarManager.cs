@@ -5,14 +5,18 @@ public class CarManager : Singleton<CarManager> {
     public CarData emptyCar;
     public CarData[] cars;
 
-    public CarData GetCar(string name) {
-        foreach (CarData car in cars) {
+    public static CarData GetCurrentCar() {
+        return GetCar(Lobby.instance.GetMyProfile().selectedCar);
+    }
+
+    public static CarData GetCar(string name) {
+        foreach (CarData car in CarManager.instance.cars) {
             if (car.name.Equals(name)) {
                 return car;
             }
         }
 
-        return emptyCar;
+        return CarManager.instance.emptyCar;
     }
 
     [System.Serializable]

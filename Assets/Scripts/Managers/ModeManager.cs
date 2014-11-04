@@ -4,8 +4,12 @@ using System.Collections;
 public class ModeManager : Singleton<ModeManager> {
     public ModeData[] modes;
 
-    public ModeData GetMode(string name) {
-        foreach (ModeData mode in modes) {
+    public static ModeData GetCurrentMode() {
+        return GetMode(Lobby.instance.mode);
+    }
+
+    public static ModeData GetMode(string name) {
+        foreach (ModeData mode in ModeManager.instance.modes) {
             if (mode.name.Equals(name)) {
                 return mode;
             }
@@ -19,6 +23,6 @@ public class ModeManager : Singleton<ModeManager> {
         public Sprite image;
         public string name;
         public string description;
-        public Mode mode;
+        public string mode;
     }
 }

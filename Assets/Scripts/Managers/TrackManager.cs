@@ -4,8 +4,12 @@ using System.Collections;
 public class TrackManager : Singleton<TrackManager> {
     public TrackData[] tracks;
 
-    public TrackData GetTrack(string name) {
-        foreach (TrackData track in tracks) {
+    public static TrackData GetCurrentTrack() {
+        return GetTrack(Lobby.instance.track);
+    }
+
+    public static TrackData GetTrack(string name) {
+        foreach (TrackData track in TrackManager.instance.tracks) {
             if (track.name.Equals(name)) {
                 return track;
             }

@@ -15,17 +15,13 @@ public class Lobby : Singleton<Lobby> {
     public delegate void OnPlayerDisconnect(NetworkPlayer player);
     public event OnPlayerDisconnect OnDisconnect = delegate { };
 
-<<<<<<< HEAD
-    public Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
-=======
     public delegate void OnPlayerUpdate(NetworkPlayer player);
     public event OnPlayerUpdate OnUpdate = delegate { };
->>>>>>> c72c7668f382c9525be8761ec09b5214ea3f1f09
 
     public delegate void OnServerUpdate();
     public event OnServerUpdate OnUpdateServer = delegate { };
 
-    private Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
+    public Dictionary<NetworkPlayer, PlayerProfile> connectedPlayers = new Dictionary<NetworkPlayer, PlayerProfile>();
 
     [RPC]
     public void StartGame() {
@@ -33,7 +29,7 @@ public class Lobby : Singleton<Lobby> {
         menu.HidePanels();
         menu.ShowPanel(loadScreenPanel);
 
-        string sceneName = TrackManager.instance.GetTrack(track).sceneName;
+        string sceneName = TrackManager.GetCurrentTrack().sceneName;
 
         StartCoroutine(SceneLoader.LoadLevel(sceneName));
         StartCoroutine(SpawnCar());
@@ -48,6 +44,8 @@ public class Lobby : Singleton<Lobby> {
 
         OnJoin(player);
 
+        StartCoroutine(UpdatePositions());
+
         Debug.Log("Player Connected: (Name: [" + name + "] ID: [" + player.ToString() + "])");
     }
 
@@ -56,6 +54,8 @@ public class Lobby : Singleton<Lobby> {
         OnDisconnect(player);
 
         connectedPlayers.Remove(player);
+
+        StartCoroutine(UpdatePositions());
     }
 
     private IEnumerator SpawnCar() {
@@ -65,7 +65,7 @@ public class Lobby : Singleton<Lobby> {
 
         Track track = FindObjectOfType<Track>();
         PlayerProfile profile = GetMyProfile();
-        GameObject car = CarManager.instance.GetCar(profile.selectedCar).prefab.gameObject;
+        GameObject car = CarManager.GetCurrentCar().prefab.gameObject;
 
         if (track) {
             int position = profile.startPosition;
@@ -75,6 +75,7 @@ public class Lobby : Singleton<Lobby> {
         }
         else {
             // Fallback
+            Debug.Log("No [Track] class found!");
             Network.Instantiate(car, Vector3.zero, Quaternion.identity, 0);
         }
 
@@ -110,6 +111,21 @@ public class Lobby : Singleton<Lobby> {
 
         this.mode = mode;
         OnUpdateServer();
+    }
+
+    IEnumerator UpdatePositions() {
+        if (Network.isServer) {
+            yield return new WaitForEndOfFrame();
+
+            int i = 0;
+
+            foreach (PlayerProfile playerProfile in Lobby.instance.GetProfiles()) {
+                Lobby.instance.UpdateProfile(playerProfile.GetOwner(), PlayerProfile.START_POSITION, i.ToString());
+                Debug.Log(i);
+
+                i++;
+            }
+        }
     }
 
     public List<PlayerProfile> GetProfiles() {

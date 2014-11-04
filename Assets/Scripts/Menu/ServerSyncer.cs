@@ -14,11 +14,6 @@ public class ServerSyncer : MonoBehaviour {
     void OnEnable() {
         Lobby lobby = Lobby.instance;
 
-        if (Network.isServer) {
-            lobby.OnJoin += OnPlayersChanged;
-            lobby.OnDisconnect += OnPlayersChanged;
-        }
-
         lobby.OnUpdateServer += OnServerUpdate;
         lobby.OnUpdate += OnUpdate;
     }
@@ -26,27 +21,8 @@ public class ServerSyncer : MonoBehaviour {
     void OnDisable() {
         Lobby lobby = Lobby.instance;
 
-        if (Network.isServer) {
-            lobby.OnJoin -= OnPlayersChanged;
-            lobby.OnDisconnect -= OnPlayersChanged;
-        }
-
         lobby.OnUpdateServer -= OnServerUpdate;
         lobby.OnUpdate -= OnUpdate;
-    }
-
-    void OnPlayersChanged(NetworkPlayer player) {
-        StartCoroutine(DelayedUpdate());
-    }
-
-    IEnumerator DelayedUpdate() {
-        yield return new WaitForEndOfFrame();
-
-        int i = 0;
-
-        foreach (PlayerProfile playerProfile in Lobby.instance.GetProfiles()) {
-            Lobby.instance.UpdateProfile(playerProfile.GetOwner(), PlayerProfile.START_POSITION, i++.ToString());
-        }
     }
 
     void OnUpdate(NetworkPlayer player) {
@@ -57,8 +33,7 @@ public class ServerSyncer : MonoBehaviour {
         Lobby lobby = Lobby.instance;
 
         bool trackSelected = false;
-        string track = lobby.track;
-        TrackManager.TrackData trackData = TrackManager.instance.GetTrack(track);
+        TrackManager.TrackData trackData = TrackManager.GetCurrentTrack();
 
         if (trackData != null) {
             trackText.text = trackData.name;
@@ -66,12 +41,11 @@ public class ServerSyncer : MonoBehaviour {
             trackSelected = true;
         }
         else {
-            Debug.Log("Invalid track: [" + track + "]");
+            Debug.Log("Invalid track: [" + Lobby.instance.track + "]");
         }
 
         bool modeSelected = false;
-        string mode = lobby.mode;
-        ModeManager.ModeData modeData = ModeManager.instance.GetMode(mode);
+        ModeManager.ModeData modeData = ModeManager.GetCurrentMode();
 
         if (modeData != null) {
             modeText.text = modeData.name;
@@ -79,7 +53,7 @@ public class ServerSyncer : MonoBehaviour {
             modeSelected = true;
         }
         else {
-            Debug.Log("Invalid mode: [" + mode + "]");
+            Debug.Log("Invalid mode: [" + Lobby.instance.mode + "]");
         }
 
         if (trackSelected && modeSelected && lobby.GetMyProfile().selectedCar != null) {

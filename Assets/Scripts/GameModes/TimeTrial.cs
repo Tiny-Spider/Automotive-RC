@@ -9,16 +9,34 @@ using System;
 /// 2.  Checkpoints are listed
 /// </summary>
 public class TimeTrial : Mode {
-
     GameObject[] checkpoints;
-    Dictionary<NetworkPlayer,int>currentCheckpoint = new Dictionary<NetworkPlayer,int>();
+    Dictionary<NetworkPlayer, int> currentCheckpoint = new Dictionary<NetworkPlayer, int>();
     Dictionary<NetworkPlayer, float> timeChecker = new  Dictionary<NetworkPlayer, float>();
     List<NetworkPlayer> finishedPlayers = new List<NetworkPlayer>();
 
-    public override void Awake()
-    {
+    public override void Awake() {
         InitializeCheckPoints();
-        EnableCarControllers(false);     
+
+        StartCoroutine(TryDisable());
+    }
+
+    IEnumerator TryDisable() {
+        bool ready = true;
+
+        while(!ready) {
+            ready = true;
+
+            foreach (PlayerProfile playerProfile in Lobby.instance.connectedPlayers.Values) {
+                if (!playerProfile.loaded) {
+                    ready = false;
+                    break;
+                }
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        EnableCarControllers(false);  
     }
 
 	public override void Start () {

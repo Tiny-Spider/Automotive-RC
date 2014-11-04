@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class Car : MonoBehaviour {
-    public NetworkPlayer player;
-
     public float maxSpeed = 100.0F;
     public float maxSpeedBackward = 35.0F;
     public float engineTorque = 225.0F;
@@ -26,28 +24,14 @@ public class Car : MonoBehaviour {
 
     public NetworkPlayer player;
 
-    public int lightID { private set; get; }
-    public Light[] lights;
-
-    public void SetLight(int id) {
-        lightID = id;
-
-        foreach (Light light in lights) {
-            light.flare = GameManager.instance.lensFlares[id];
-        }
-    }
-
-    void Start()
-    {
-        if (networkView.isMine)
-        {
+    void Start() {
+        if (networkView.isMine) {
             networkView.RPC("SetOwner", RPCMode.AllBuffered, Network.player);
         }
     }
 
     [RPC]
-    public void SetOwner(NetworkPlayer player)
-    {
+    public void SetOwner(NetworkPlayer player) {
         this.player = player;
     }
 }

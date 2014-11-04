@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : Singleton<GameManager> {
     private Menu menu;
-    private Mode gameMode;
-    public bool inGame = false;
-    public List<GameObject> cars;
     private HUD hud;
 
     public string menuScene = "Menu";
@@ -22,9 +20,19 @@ public class GameManager : Singleton<GameManager> {
         if (Application.loadedLevelName == menuScene) {
             menu = FindObjectOfType<Menu>();
             hud = null;
+
+            ModeManager.ModeData mode = ModeManager.GetCurrentMode();
+
+            if (mode != null) {
+                Component component = gameObject.GetComponent(mode.mode);
+
+                if (component)
+                    Destroy(component);
+            }
         } else {
             hud = FindObjectOfType<HUD>();
-            gameMode = gameObject.AddComponent<TimeTrial>();
+            gameObject.AddComponent(ModeManager.GetCurrentMode().mode);
+
             menu = null;
         }
     }

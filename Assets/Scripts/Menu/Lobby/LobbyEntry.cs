@@ -29,7 +29,7 @@ public class LobbyEntry : MonoBehaviour {
 
         nameText.text = playerProfile.name;
 
-        CarManager.CarData carData = CarManager.instance.GetCar(playerProfile.selectedCar);
+        CarManager.CarData carData = CarManager.GetCurrentCar();
         carImage.sprite = carData.image;
     }
 
